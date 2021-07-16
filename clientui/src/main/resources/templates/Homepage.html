@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Bibliothèque</title>
+    <style>
+
+        .container1 a:link, a:visited {
+            text-decoration: none;
+            border-radius: 5px;
+            float: none;
+        }
+
+        .container1 a:hover, a:active {
+            background-color: #f2f2f2;
+            border-radius: 5px;
+        }
+
+
+    </style>
+    <div th:insert="/fragments/header.html"></div>
+</head>
+
+<body>
+<div class="container1 justify-content-center bg-light col-12 my-3 p-3 rounded ">
+    <div class="row text-center">
+
+        <div class="col-12 col-lg-6 ">
+            <a th:href=" @{/books/page/1}" class="card border-info my-3 mx-auto" style="width: 25rem; height: 37rem">
+                <h5 class="card-header text-info">Faire une recherche</h5>
+                <img src="images/bookicon.png" alt="booksearch" class="card-img-top">
+                <div class="card-body text-info">
+                    <h6 class="card-title">Recherche</h6>
+                    <p class="card-text">Accéder à la liste des livres présents dans votre bibliothèque.
+                    </p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <a th:href="@{/loans}" class="card border-info my-3 mx-auto" style="width: 25rem; height: 37rem">
+                <h5 class="card-header text-info">Consulter mes emprunts</h5>
+                <img src="images/loanicon.png" alt="booksearch" class="card-img-top">
+                <div class="card-body text-info">
+                    <h6 class="card-title">Mes emprunts</h6>
+                    <p class="card-text">Accéder à la liste des mes emprunts en cours.</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+</body>
+
+<footer>
+    <div th:insert="fragments/footer.html"></div>
+</footer>
+</html>

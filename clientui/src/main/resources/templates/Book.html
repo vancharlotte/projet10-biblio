@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Livre </title>
+    <div th:insert="fragments/header.html">...</div>
+
+    <style>
+    </style>
+
+
+</head>
+<body>
+
+<div class="container1 justify-content-center bg-light col-12 my-3 p-3 rounded">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-12">
+            <div class="row justify-content-center bg-info text-white p-5">
+                <h2 th:text="${book.title}"></h2>
+            </div>
+
+            <div class="row p-3">
+
+                <div class="col-6 text-center">
+                    <img class="img-responsive my-5" src="../images/logo1.png" alt="book" style="max-width:150px;">
+                </div>
+                <div class="col-6">
+                    <br>
+                    <h5> par <span th:text="${book.author}"></span></h5>
+                    <hr>
+                    <h6> genre : <span th:text="${book.genre}"></span></h6>
+                    <h6> date de parution : <span th:text="${book.releaseDate}"></span></h6>
+                    <hr>
+                    <h6> description : </h6>
+                    <span th:text="${book.summary}"></span>
+                    <hr>
+                    <h6>Nombre d'exemplaire disponible :
+                        <span th:text="${nbCopyAvailable}"></span> /
+                        <span th:text="${nbCopy}"></span>
+
+                    </h6>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+<footer>
+    <div th:insert="fragments/footer.html">...</div>
+</footer>
+</html>

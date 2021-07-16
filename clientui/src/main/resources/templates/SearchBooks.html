@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Livres </title>
+    <div th:insert="fragments/header.html"></div>
+    <style>
+
+        .container1 a:link, a:visited {
+            font-weight:  normal;
+            border-radius: 5px;
+            float: none;
+            color: black;
+        }
+
+        .container1 a:hover, a:active {
+            color: royalblue;
+        }
+
+
+
+        .table {
+            width: 100%;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+<div class="container1 bg-light col-12 mb-3 pb-3 rounded">
+
+    <div class="row justify-content-center mb-3" style="height: 100px">
+
+        <form action="#" th:action="@{/books/page/1}" method="get"
+              class="form-inline justify-content-center bg-info col-12 rounded">
+            <div class="form-group mb-2 col-md-6 col-9">
+                <label for="searchBook" class="sr-only"></label>
+                <input type="text" name="word" class="form-control w-100 " id="searchBook"
+                       placeholder="livre, auteur, genre...">
+            </div>
+            <button type="submit" class="btn btn-outline-light mb-2 col-md-2 col-3">Recherche</button>
+        </form>
+
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8 col-12 ">
+
+            <h1 class="align-center">Liste des livres dans la Bibliothèque </h1>
+            <br>
+
+            <table class="table table-striped">
+                <thead>
+                <tr class="bg-info">
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${books.isEmpty()}">
+                    <td style="text-align:left;">
+                        aucun résultat
+                    </td>
+                    <td></td>
+                </tr>
+                <tr th:each="book : ${books}" th:href="@{/books/{bookId}(bookId=${book.id})}">
+
+                    <td style="text-align:left;">
+                        <a th:href="@{/books/{bookId}(bookId=${book.id})}">
+                            <h5 th:text="${book.title}" th:href="@{/books/{bookId}(bookId=${book.id})}"></h5>
+                            <p> Auteur : <span th:text="${book.author}"></span>
+                                <br> genre : <span th:text="${book.genre}"></span>
+                                <br> parution : <span th:text="${book.releaseDate}"></span>
+                            </p>
+                        </a>
+                    </td>
+                    <td style="text-align:right;">
+                        <a th:href="@{/books/{bookId}(bookId=${book.id})}">
+                            <img src="/images/logo1.png" alt="book" style="max-width:150px;">
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <div th:if="${totalPages > 1}" class="row justify-content-center">
+
+        <div>
+            <a th:if="${currentPage < totalPages}" th:href="@{'/books/page/' + ${currentPage + 1}+ '?word='+${word}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+            &nbsp;
+        </div>
+        <div>
+					<span style="font-weight: bold" th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}" th:href="@{'/books/page/' + ${i} + '?word='+${word}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp;
+					</span>
+        </div>
+
+        <div>
+            <a th:if="${currentPage < totalPages}" th:href="@{'/books/page/' + ${totalPages} + '?word='+${word}}">Last</a>
+            <span th:unless="${currentPage < totalPages}">Last</span>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<footer>
+    <div th:insert="fragments/footer.html"></div>
+</footer>
+</html>

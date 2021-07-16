@@ -3,7 +3,6 @@ package com.example.zuulserver;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
