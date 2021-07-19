@@ -21,6 +21,7 @@
         <module>auth-server</module>
         <module>library-book</module>
         <module>library-loan</module>
+        <module>library-booking</module>
         <module>zuul-server</module>
         <module>library-batch</module>
         <module>clientui</module>

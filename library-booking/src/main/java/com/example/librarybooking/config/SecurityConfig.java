@@ -1,4 +1,4 @@
-package com.example.libraryloan.config;
+package com.example.librarybooking.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
