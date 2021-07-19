@@ -37,8 +37,8 @@ public class BookingService {
         return bookingDao.findByBook(book);
     }
 
-    public void deleteBooking(Booking booking) {
-        bookingDao.delete(booking);
+    public void deleteBooking(int id) {
+        bookingDao.deleteById(id);
     }
 
 

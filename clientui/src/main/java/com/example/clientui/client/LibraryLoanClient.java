@@ -23,4 +23,6 @@ public interface LibraryLoanClient {
     @GetMapping(value = "/library-loan/loans/copyAvailable/{copy}")
     boolean copyAvailable(@PathVariable int copy);
 
+
+
 }

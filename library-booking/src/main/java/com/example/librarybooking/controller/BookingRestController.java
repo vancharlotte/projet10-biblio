@@ -82,13 +82,13 @@ public class BookingRestController {
     }
 
 
-
+/*
     @PutMapping(value = "/booking/return")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Booking returnBooking(@Valid @RequestBody Booking booking) {
         return bookingService.returnBooking(booking);
     }
-
+*/
 
     @GetMapping(value ="/bookings/{user}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
@@ -102,10 +102,10 @@ public class BookingRestController {
         return bookingService.findByBook(book);
     }
 
-    @PutMapping(value = "/booking/return")
+    @PutMapping(value = "/booking/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    public void deleteBooking(@Valid @RequestBody Booking booking) {
-         bookingService.deleteBooking(booking);
+    public void deleteBooking(@PathVariable int id) {
+         bookingService.deleteBooking(id);
     }
 
 
