@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 
@@ -36,6 +37,14 @@ public class BookingRestController {
         Booking booking = bookingService.findById(id);
         if(booking==null) throw new BookingNotFoundException("booking not found");
         return bookingService.findById(id);
+    }
+
+    @GetMapping(value="/library-booking/bookings/{user}/{book}")
+    public Booking getBookingByUserByBook (@PathVariable int user, int book){
+        Booking booking = bookingService.findByUserAndBook(user,book);
+        if(booking==null) throw new BookingNotFoundException("booking not found");
+        return bookingService.findByUserAndBook(user,book);
+
     }
 
 
@@ -101,6 +110,19 @@ public class BookingRestController {
     public List<Booking> listBookingByBook(@PathVariable int book){
         return bookingService.findByBook(book);
     }
+
+    @GetMapping(value ="/bookings/{notifDate}")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    public List<Booking> listBookingByNotifDate(@PathVariable Date date){
+        return bookingService.findByNotifDate(date);
+    }
+
+  //a definir  @GetMapping(value ="/bookings/{book}")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    public List<Booking> listBookingByBookOrderByStartDate(@PathVariable int book){
+        return bookingService.findByBookOrderByStartDate(book);
+    }
+
 
     @PutMapping(value = "/booking/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")

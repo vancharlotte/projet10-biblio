@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,14 +38,22 @@ public class BookingService {
         return bookingDao.findByBook(book);
     }
 
+    public List<Booking> findByNotifDate(Date date) {
+        return bookingDao.findByNotifDate(date);
+    }
+
+    public List<Booking> findByBookOrderByStartDate(int book) {
+        return bookingDao.findByBookOrderByStartDate(book);
+    }
+
+
     public void deleteBooking(int id) {
         bookingDao.deleteById(id);
     }
 
-
-    public Booking returnBooking (Booking booking) {
-        Booking exist = bookingDao.findById(booking.getId());
+    public Booking findByUserAndBook(int user, int book) {
+        Booking exist = bookingDao.findByUserAndBook(user,book);
         if (exist == null) throw new BookingNotFoundException("booking not found");
-        return bookingDao.save(booking);
+        return bookingDao.findByUserAndBook(user,book);
     }
 }

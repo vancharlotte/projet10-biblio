@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 
 @FeignClient(name = "zuul-server")
@@ -20,11 +21,21 @@ public interface LibraryBookingClient {
     @GetMapping(value="/library-booking/booking/{id}")
     BookingBean selectBooking(@PathVariable int id);
 
+    //à verif
+    @GetMapping(value="/library-booking/bookings/{user}/{book}")
+    BookingBean findByUserAndBook(@PathVariable int user, int book);
+
     @GetMapping(value = "/library-booking/bookings/{book}")
     List<BookingBean> listBookingByBook(@PathVariable int book);
 
+    //a definir  @GetMapping(value ="/library-booking/bookings/{book}")
+    List<BookingBean> listBookingByBookOrderByStartDate(@PathVariable int book);
+
     @GetMapping(value = "/library-booking/bookings/{user}")
     List<BookingBean> listBookingByUser(@PathVariable int user);
+
+    @GetMapping(value ="/library-booking/bookings/{startDate}")
+    List<BookingBean> listBookingByStartDate(@PathVariable Date date);
 
     @GetMapping(value = "/library-booking/booking/delete/{id}")
     boolean deleteBooking(@PathVariable int id);
