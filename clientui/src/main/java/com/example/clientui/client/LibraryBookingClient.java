@@ -1,12 +1,9 @@
 package com.example.clientui.client;
 
 import com.example.clientui.beans.BookingBean;
-import com.example.clientui.beans.LoanBean;
-import com.example.librarybooking.model.Booking;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,10 +38,10 @@ public interface LibraryBookingClient {
     boolean deleteBooking(@PathVariable int id);
 
     @PostMapping(value = "/library-booking/addBooking")
-    ResponseEntity<Void> addBooking(@Valid @RequestBody Booking booking) ;
+    ResponseEntity<Void> addBooking(@Valid @RequestBody BookingBean booking) ;
 
     @PostMapping(value = "library-booking/notifBooking")
-    void notifBooking(@Valid @RequestBody Booking booking);
+    void notifBooking(@Valid @RequestBody BookingBean booking);
 
 
 }

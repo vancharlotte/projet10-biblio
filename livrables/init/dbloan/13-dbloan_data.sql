@@ -1,4 +1,4 @@
-INSERT INTO LOAN
+INSERT INTO loan
 (id, copy, user, start_date, end_date, returned, renewed)
 VALUES
 (2, 1, 2, '2020-07-18', '2020-08-15', true, false),

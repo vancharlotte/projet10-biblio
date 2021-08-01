@@ -63,12 +63,7 @@
             <version>2.0.2</version>
             <scope>compile</scope>
         </dependency>
-		<dependency>
-			<groupId>com.example</groupId>
-			<artifactId>library-booking</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
+
 
 
 	</dependencies>
