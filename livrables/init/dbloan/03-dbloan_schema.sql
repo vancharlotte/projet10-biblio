@@ -1,4 +1,11 @@
-SET sql_mode = '';
+CREATE DATABASE IF NOT EXISTS dbloan;
+
+CREATE USER 'admin'@'dbloan' IDENTIFIED BY 'admin123!';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'dbloan';
+FLUSH PRIVILEGES ;
+
+USE dbloan;
+
 create table if not exists hibernate_sequence
 (
     next_val bigint null

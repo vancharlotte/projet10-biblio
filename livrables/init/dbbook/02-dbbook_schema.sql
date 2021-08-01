@@ -1,4 +1,10 @@
-SET sql_mode = '';
+CREATE DATABASE IF NOT EXISTS dbbook;
+
+CREATE USER 'admin'@'dbbook' IDENTIFIED BY 'admin123!';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'dbbook';
+FLUSH PRIVILEGES ;
+
+USE dbbook;
 
 create table if not exists book
 (
