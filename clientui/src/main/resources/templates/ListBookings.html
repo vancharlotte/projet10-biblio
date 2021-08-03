@@ -35,7 +35,7 @@
                 </thead>
 
                 <tbody>
-                <tr th:if="${map.isEmpty()}">
+                <tr th:if="${listBookingsInfo.isEmpty()}">
                     <td>aucun résultat</td>
                     <td></td>
                     <td></td>
@@ -43,19 +43,15 @@
 
 
                 </tr>
-                <tr th:each="entry  : ${map}">
-                    <div th:each="book : ${entry.value}">
-                        <td th:text="${book.title}"></td>
-                    </div>
-                    <div th:each="booking : ${entry.key}">
-                        <td th:text=" date retour estimé"></td>
-                        <td th:text=" classement dans liste d'attente'"></td>
+                <tr th:each="booking  : ${listBookingsInfo}">
+                        <td th:text="${booking.book}"></td>
+                        <td th:text="${booking.returnDate}"></td>
+                        <td th:text="${booking.rank}"></td>
                         <td>
                             <a th:href="@{/bookings/delete/{bookingId}(bookingId=${booking.id})}">
                                 <button type="button" class="btn btn-primary"> Annuler </button>
                             </a>
                         </td>
-                    </div>
                 </tr>
                 </tbody>
             </table>

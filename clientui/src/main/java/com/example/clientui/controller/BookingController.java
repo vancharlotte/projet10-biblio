@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -44,25 +45,51 @@ public class BookingController {
         AccountBean user = accountClient.findUsername(username);
 
         List<BookingBean> bookingsByUser = bookingClient.listBookingByUser(user.getId());
-        LinkedHashMap<BookingBean, BookBean> map = new LinkedHashMap<>();
+        List<BookingInformation> listBookingsInfo = null;
 
         for (int i = 0; i < bookingsByUser.size(); i++) {
-            BookBean book = bookClient.displayBook(bookingsByUser.get(i).getBook());
-            map.put(bookingsByUser.get(i), book);
 
-            List<BookingBean> bookingsByBook = bookingClient.listBookingByBook(book.getId());
-            bookingsByBook.get(0);
+            BookingInformation bookingInfo = new BookingInformation();
+
+
+            BookBean book = bookClient.displayBook(bookingsByUser.get(i).getBook());
+
+            List<CopyBean> copyByBook = bookClient.listCopies(book.getId());
+            List<LoanBean> loanByCopy = null;
+
+            for (int j = 0; j< copyByBook.size(); j++){
+                List<LoanBean> loanByCopyByBook = loanClient.listLoansByCopyAndReturnedNot(copyByBook.get(j).getId());
+                loanByCopy.addAll(loanByCopyByBook);
+            }
+
+            Date date1 = null;
+            for (int k = 0; k< loanByCopy.size(); k++){
+                Date date2 = loanByCopy.get(k).getEndDate();
+                if(date2.before(date1) || date1==null ){ date1 =date2; }
 
         }
 
-        model.addAttribute("bookingsByUser", bookingsByUser);
-        model.addAttribute("map", map);
+            int rank = 0;
+            List<BookingBean> bookingByBook = bookingClient.listBookingByBook(book.getId());
+            for (int l = 0; l< bookingByBook.size(); l++){
+                if (bookingByBook.get(l).getUser()==user.getId()){
+                    rank = l+1;
+                }
+            }
 
 
+            bookingInfo.setUser(user.getUsername());
+            bookingInfo.setBook(bookClient.displayBook(bookingsByUser.get(i).getBook()).getTitle());
+            bookingInfo.setReturnDate(date1);
+            bookingInfo.setNbRank(rank);
+
+            listBookingsInfo.add(bookingInfo);
+            }
+
+        model.addAttribute("listBookingsInfo", listBookingsInfo);
 
         return "ListBookings";
     }
 
-    //recup start la + proche
-    //recup nb au classement
+
 }

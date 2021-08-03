@@ -38,6 +38,10 @@ public class LoanService {
         return loanDao.findByUser(user);
     }
 
+    public List<Loan> findByCopyAndReturnedNotOrderByEndDate(int copy) {
+        return loanDao.findByCopyAndReturnedNotOrderByEndDate(copy);
+    }
+
     public boolean copyAvailable(int copy) {
         boolean copyAvailable = !loanDao.existsByCopyAndReturned(copy, false);
         logger.info(Boolean.toString(copyAvailable));

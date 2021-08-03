@@ -3,6 +3,7 @@ package com.example.clientui.client;
 import com.example.clientui.beans.LoanBean;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public interface LibraryLoanClient {
 
     @GetMapping(value = "/library-loan/loans/{user}")
     List<LoanBean> listLoans(@PathVariable int user);
+
+    @GetMapping(value ="/library-loan/loansByCopy/{copy}")
+    List<LoanBean> listLoansByCopyAndReturnedNot(@PathVariable int copy);
 
     @GetMapping(value = "/library-loan/loans/copyAvailable/{copy}")
     boolean copyAvailable(@PathVariable int copy);
