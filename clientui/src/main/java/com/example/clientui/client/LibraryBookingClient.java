@@ -23,7 +23,7 @@ public interface LibraryBookingClient {
     BookingBean findByUserAndBook(@PathVariable int user, int book);
 
     //@GetMapping(value = "/library-booking/bookings/{book}")
-    List<BookingBean> listBookingByBook(@PathVariable int book);
+   // List<BookingBean> listBookingByBook(@PathVariable int book);
 
     @GetMapping(value ="/library-booking/bookings/{book}")
     List<BookingBean> listBookingByBookOrderByStartDate(@PathVariable int book);

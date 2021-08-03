@@ -74,7 +74,7 @@ public class BookController {
                 copiesAvailable.add(copies.get(i));            }
         }
 
-        List <BookingBean> bookings = bookingClient.listBookingByBook(book.getId());
+        List <BookingBean> bookings = bookingClient.listBookingByBookOrderByStartDate(book.getId());
 
         model.addAttribute("nbCopy", copies.size());
         model.addAttribute("nbCopyAvailable", copiesAvailable.size());

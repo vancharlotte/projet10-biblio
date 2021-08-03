@@ -39,7 +39,7 @@ public class LoanService {
     }
 
     public List<Loan> findByCopyAndReturnedNotOrderByEndDate(int copy) {
-        return loanDao.findByCopyAndReturnedNotOrderByEndDate(copy);
+        return loanDao.findByCopyAndReturnedNotOrderByEndDate(copy, false);
     }
 
     public boolean copyAvailable(int copy) {

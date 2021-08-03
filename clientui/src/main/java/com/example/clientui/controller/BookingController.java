@@ -70,7 +70,7 @@ public class BookingController {
         }
 
             int rank = 0;
-            List<BookingBean> bookingByBook = bookingClient.listBookingByBook(book.getId());
+            List<BookingBean> bookingByBook = bookingClient.listBookingByBookOrderByStartDate(book.getId());
             for (int l = 0; l< bookingByBook.size(); l++){
                 if (bookingByBook.get(l).getUser()==user.getId()){
                     rank = l+1;
