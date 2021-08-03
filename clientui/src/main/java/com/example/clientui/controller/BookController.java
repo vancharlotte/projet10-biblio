@@ -74,12 +74,15 @@ public class BookController {
                 copiesAvailable.add(copies.get(i));            }
         }
 
-        List <BookingBean> bookings = bookingClient.listBookingByBookOrderByStartDate(book.getId());
+       List <BookingBean> bookings = bookingClient.listBookingByBookOrderByStartDate(book.getId());
+
 
         model.addAttribute("nbCopy", copies.size());
         model.addAttribute("nbCopyAvailable", copiesAvailable.size());
-        model.addAttribute("nbBooking", bookings.size());
-        model.addAttribute("returnDate",bookings.get(0).getStartDate());
+
+       model.addAttribute("nbBooking", bookings.size());
+       model.addAttribute("returnDate",bookings.get(0).getStartDate());
+
 
         return "Book";
     }
