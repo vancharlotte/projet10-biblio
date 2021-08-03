@@ -25,7 +25,7 @@
 <div class="container1 justify-content-center bg-light col-12 my-3 p-3 rounded ">
     <div class="row text-center">
 
-        <div class="col-12 col-lg-6 ">
+        <div class="col-12 col-lg-4">
             <a th:href=" @{/books/page/1}" class="card border-info my-3 mx-auto" style="width: 25rem; height: 37rem">
                 <h5 class="card-header text-info">Faire une recherche</h5>
                 <img src="images/bookicon.png" alt="booksearch" class="card-img-top">
@@ -37,13 +37,24 @@
             </a>
         </div>
 
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-4">
             <a th:href="@{/loans}" class="card border-info my-3 mx-auto" style="width: 25rem; height: 37rem">
                 <h5 class="card-header text-info">Consulter mes emprunts</h5>
-                <img src="images/loanicon.png" alt="booksearch" class="card-img-top">
+                <img src="images/loanicon.png" alt="loan" class="card-img-top">
                 <div class="card-body text-info">
                     <h6 class="card-title">Mes emprunts</h6>
                     <p class="card-text">Accéder à la liste des mes emprunts en cours.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <a th:href="@{/bookings}" class="card border-info my-3 mx-auto" style="width: 25rem; height: 37rem">
+                <h5 class="card-header text-info">Consulter mes réservations</h5>
+                <img src="images/loanicon.png" alt="booking" class="card-img-top">
+                <div class="card-body text-info">
+                    <h6 class="card-title">Mes réservations</h6>
+                    <p class="card-text">Accéder à la liste des mes réservations en attente.</p>
                 </div>
             </a>
         </div>
