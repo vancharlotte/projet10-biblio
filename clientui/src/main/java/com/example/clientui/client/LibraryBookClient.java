@@ -14,6 +14,7 @@ import java.util.List;
 @RibbonClient(name = "library-book")
 public interface LibraryBookClient {
 
+
     @GetMapping(value = "/library-book/books")
     List<BookBean> listBooks();
 

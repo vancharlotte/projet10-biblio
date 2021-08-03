@@ -1,8 +1,10 @@
 package com.example.clientui.controller;
 
 import com.example.clientui.beans.BookBean;
+import com.example.clientui.beans.BookingBean;
 import com.example.clientui.beans.CopyBean;
 import com.example.clientui.client.LibraryBookClient;
+import com.example.clientui.client.LibraryBookingClient;
 import com.example.clientui.client.LibraryLoanClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,8 @@ public class BookController {
     @Autowired
     private LibraryLoanClient loanClient;
 
+    @Autowired
+    private LibraryBookingClient bookingClient;
 
     @GetMapping("/books/page/{currentPage}")
     public String searchBooks(@PathVariable int currentPage,
@@ -70,8 +74,12 @@ public class BookController {
                 copiesAvailable.add(copies.get(i));            }
         }
 
+        List <BookingBean> bookings = bookingClient.listBookingByBook(book.getId());
+
         model.addAttribute("nbCopy", copies.size());
         model.addAttribute("nbCopyAvailable", copiesAvailable.size());
+        model.addAttribute("nbBooking", bookings.size());
+        model.addAttribute("returnDate",bookings.get(0).getStartDate());
 
         return "Book";
     }

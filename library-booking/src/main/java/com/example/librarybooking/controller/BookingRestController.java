@@ -39,7 +39,7 @@ public class BookingRestController {
         return bookingService.findById(id);
     }
 
-    @GetMapping(value="/library-booking/bookings/{user}/{book}")
+    @GetMapping(value="/bookings/{user}/{book}")
     public Booking getBookingByUserByBook (@PathVariable int user, int book){
         Booking booking = bookingService.findByUserAndBook(user,book);
         if(booking==null) throw new BookingNotFoundException("booking not found");
@@ -105,7 +105,7 @@ public class BookingRestController {
         return bookingService.findByUser(user);
     }
 
-    @GetMapping(value ="/bookings/{book}")
+    //@GetMapping(value ="/bookings/{book}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByBook(@PathVariable int book){
         return bookingService.findByBook(book);
@@ -117,7 +117,7 @@ public class BookingRestController {
         return bookingService.findByNotifDate(date);
     }
 
-  //a definir  @GetMapping(value ="/bookings/{book}")
+    @GetMapping(value ="/bookings/{book}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByBookOrderByStartDate(@PathVariable int book){
         return bookingService.findByBookOrderByStartDate(book);
