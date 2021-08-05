@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+@Controller
 public class BookingController {
 
     private Logger logger = LoggerFactory.getLogger(BookingController.class);
@@ -47,6 +49,7 @@ public class BookingController {
         List<BookingBean> bookingsByUser = bookingClient.listBookingByUser(user.getId());
         List<BookingInformation> listBookingsInfo = null;
 
+        if(!bookingsByUser.isEmpty()){
         for (int i = 0; i < bookingsByUser.size(); i++) {
 
             BookingInformation bookingInfo = new BookingInformation();
@@ -67,7 +70,7 @@ public class BookingController {
                 Date date2 = loanByCopy.get(k).getEndDate();
                 if(date2.before(date1) || date1==null ){ date1 =date2; }
 
-        }
+            }
 
             int rank = 0;
             List<BookingBean> bookingByBook = bookingClient.listBookingByBookOrderByStartDate(book.getId());
@@ -85,6 +88,7 @@ public class BookingController {
 
             listBookingsInfo.add(bookingInfo);
             }
+        }
 
         model.addAttribute("listBookingsInfo", listBookingsInfo);
 

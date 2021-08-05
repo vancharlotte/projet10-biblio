@@ -35,7 +35,7 @@
                 </thead>
 
                 <tbody>
-                <tr th:if="${listBookingsInfo.isEmpty()}">
+                <tr th:if="${listBookingsInfo!=null || listBookingsInfo.isEmpty()}">
                     <td>aucun résultat</td>
                     <td></td>
                     <td></td>
@@ -43,7 +43,7 @@
 
 
                 </tr>
-                <tr th:each="booking  : ${listBookingsInfo}">
+                <tr  th:each="booking  : ${listBookingsInfo}">
                         <td th:text="${booking.book}"></td>
                         <td th:text="${booking.returnDate}"></td>
                         <td th:text="${booking.rank}"></td>

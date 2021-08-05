@@ -19,16 +19,16 @@ public interface LibraryBookingClient {
     BookingBean selectBooking(@PathVariable int id);
 
     //à verif
-    @GetMapping(value="/library-booking/bookings/{user}/{book}")
-    BookingBean findByUserAndBook(@PathVariable int user, int book);
+   // @GetMapping(value="/library-booking/bookings/{user}/{book}")
+   // BookingBean findByUserAndBook(@PathVariable int user, int book);
 
     //@GetMapping(value = "/library-booking/bookings/{book}")
    // List<BookingBean> listBookingByBook(@PathVariable int book);
 
-    @GetMapping(value ="/library-booking/bookings/{book}")
+    @GetMapping(value ="/library-booking/bookings/book/{book}")
     List<BookingBean> listBookingByBookOrderByStartDate(@PathVariable int book);
 
-    @GetMapping(value = "/library-booking/bookings/{user}")
+    @GetMapping(value = "/library-booking/bookings/user/{user}")
     List<BookingBean> listBookingByUser(@PathVariable int user);
 
     @GetMapping(value ="/library-booking/bookings/{startDate}")

@@ -81,7 +81,11 @@ public class BookController {
         model.addAttribute("nbCopyAvailable", copiesAvailable.size());
 
        model.addAttribute("nbBooking", bookings.size());
-       model.addAttribute("returnDate",bookings.get(0).getStartDate());
+       if(!bookings.isEmpty()){
+       model.addAttribute("returnDate",bookings.get(0).getStartDate());}
+       else {
+           model.addAttribute("returnDate", "disponible");
+       }
 
 
         return "Book";

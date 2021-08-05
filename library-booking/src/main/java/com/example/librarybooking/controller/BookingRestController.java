@@ -99,7 +99,7 @@ public class BookingRestController {
     }
 */
 
-    @GetMapping(value ="/bookings/{user}")
+    @GetMapping(value ="/bookings/user/{user}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByUser(@PathVariable int user){
         return bookingService.findByUser(user);
@@ -117,7 +117,7 @@ public class BookingRestController {
         return bookingService.findByNotifDate(date);
     }
 
-    @GetMapping(value ="/bookings/{book}")
+    @GetMapping(value ="/bookings/book/{book}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByBookOrderByStartDate(@PathVariable int book){
         return bookingService.findByBookOrderByStartDate(book);
