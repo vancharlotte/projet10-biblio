@@ -23,7 +23,6 @@ public class Booking {
     @NotNull
     private Date startDate;
 
-    @NotNull
     private Date notifDate;
 
 

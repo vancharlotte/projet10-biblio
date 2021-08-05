@@ -16,7 +16,7 @@
 <div class="container1 bg-light col-12 my-3 rounded">
 
     <div class="row justify-content-center py-3" style="height: 100px">
-        <h1> Mes eréservations </h1>
+        <h1> Mes réservations </h1>
     </div>
 
     <div class="row justify-content-center">
@@ -35,7 +35,7 @@
                 </thead>
 
                 <tbody>
-                <tr th:if="${listBookingsInfo!=null || listBookingsInfo.isEmpty()}">
+                <tr th:if="${listBookingsInfo==null}">
                     <td>aucun résultat</td>
                     <td></td>
                     <td></td>
@@ -46,9 +46,9 @@
                 <tr  th:each="booking  : ${listBookingsInfo}">
                         <td th:text="${booking.book}"></td>
                         <td th:text="${booking.returnDate}"></td>
-                        <td th:text="${booking.rank}"></td>
+                        <td th:text="${booking.nbRank}"></td>
                         <td>
-                            <a th:href="@{/bookings/delete/{bookingId}(bookingId=${booking.id})}">
+                            <a th:href="@{/bookings/delete/{bookingId}(bookingId=${booking.booking})}">
                                 <button type="button" class="btn btn-primary"> Annuler </button>
                             </a>
                         </td>

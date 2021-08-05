@@ -47,18 +47,18 @@ public class BookingController {
         AccountBean user = accountClient.findUsername(username);
 
         List<BookingBean> bookingsByUser = bookingClient.listBookingByUser(user.getId());
-        List<BookingInformation> listBookingsInfo = null;
+        List<BookingInformation> listBookingsInfo = new ArrayList<>();
 
-        if(!bookingsByUser.isEmpty()){
         for (int i = 0; i < bookingsByUser.size(); i++) {
 
             BookingInformation bookingInfo = new BookingInformation();
 
+            bookingInfo.setBooking(bookingsByUser.get(i).getId());
 
             BookBean book = bookClient.displayBook(bookingsByUser.get(i).getBook());
 
             List<CopyBean> copyByBook = bookClient.listCopies(book.getId());
-            List<LoanBean> loanByCopy = null;
+            List<LoanBean> loanByCopy = new ArrayList<>();
 
             for (int j = 0; j< copyByBook.size(); j++){
                 List<LoanBean> loanByCopyByBook = loanClient.listLoansByCopyAndReturnedNot(copyByBook.get(j).getId());
@@ -80,7 +80,6 @@ public class BookingController {
                 }
             }
 
-
             bookingInfo.setUser(user.getUsername());
             bookingInfo.setBook(bookClient.displayBook(bookingsByUser.get(i).getBook()).getTitle());
             bookingInfo.setReturnDate(date1);
@@ -88,7 +87,6 @@ public class BookingController {
 
             listBookingsInfo.add(bookingInfo);
             }
-        }
 
         model.addAttribute("listBookingsInfo", listBookingsInfo);
 

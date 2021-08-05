@@ -4,12 +4,21 @@ import java.util.Date;
 
 public class BookingInformation {
 
+    private int booking;
     private String user;
     private String book;
     private Date returnDate;
     private int nbRank;
 
     public BookingInformation() {
+    }
+
+    public int getBooking() {
+        return booking;
+    }
+
+    public void setBooking(int booking) {
+        this.booking = booking;
     }
 
     public String getUser() {

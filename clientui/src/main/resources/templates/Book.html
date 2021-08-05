@@ -43,6 +43,10 @@
                     <h6>liste d'attente :
                         <span th:text="${nbBooking}"></span> /
                         <span th:text="${nbCopy*2}"></span>
+                        <hr>
+                        <a th:href="@{/addBooking}">
+                            <button type="button" class="btn btn-primary"> Réserver </button>
+                        </a>
 
                     </h6>
                     <hr>

@@ -18,6 +18,6 @@ create table if not exists booking
     user       int         not null,
     book       int         not null,
     start_date   datetime(6) not null,
-    notif_date datetime(6) not null
+    notif_date datetime(6) null
     );
 
