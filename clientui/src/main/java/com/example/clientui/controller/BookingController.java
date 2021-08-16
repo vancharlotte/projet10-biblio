@@ -15,6 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -60,15 +65,17 @@ public class BookingController {
             List<CopyBean> copyByBook = bookClient.listCopies(book.getId());
             List<LoanBean> loanByCopy = new ArrayList<>();
 
-            for (int j = 0; j< copyByBook.size(); j++){
-                List<LoanBean> loanByCopyByBook = loanClient.listLoansByCopyAndReturnedNot(copyByBook.get(j).getId());
+            for (CopyBean copyBean : copyByBook) {
+                List<LoanBean> loanByCopyByBook = loanClient.listLoansByCopyAndReturnedNot(copyBean.getId());
                 loanByCopy.addAll(loanByCopyByBook);
             }
 
             Date date1 = null;
-            for (int k = 0; k< loanByCopy.size(); k++){
-                Date date2 = loanByCopy.get(k).getEndDate();
-                if(date2.before(date1) || date1==null ){ date1 =date2; }
+            for (LoanBean loanBean : loanByCopy) {
+                Date date2 = loanBean.getEndDate();
+                if (date2.before(date1) || date1 == null) {
+                    date1 = date2;
+                }
 
             }
 
@@ -91,6 +98,36 @@ public class BookingController {
         model.addAttribute("listBookingsInfo", listBookingsInfo);
 
         return "ListBookings";
+    }
+
+    @GetMapping("/addBooking/{bookId}")
+    public String addBooking(@PathVariable String bookId) {
+        BookingBean booking = new BookingBean();
+        System.out.println(bookId);
+
+        int id = Integer.parseInt(bookId);
+        booking.setBook(id);
+
+        logger.info("add booking");
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (String) authentication.getPrincipal();
+
+        AccountBean user = accountClient.findUsername(username);
+        booking.setUser(user.getId());
+
+        LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
+        LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
+        Timestamp timestamp = Timestamp.valueOf(nowMidnight);
+        logger.info(timestamp.toString());
+
+        booking.setStartDate(timestamp);
+
+        bookingClient.addBooking(booking);
+
+
+        return "redirect:/bookings";
+
     }
 
 

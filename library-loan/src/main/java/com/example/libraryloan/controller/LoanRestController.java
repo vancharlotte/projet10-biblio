@@ -10,15 +10,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import sun.util.calendar.BaseCalendar;
 
 import javax.validation.Valid;
 import java.net.URI;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 
@@ -72,7 +75,14 @@ public class LoanRestController {
     @PutMapping(value = "/loan/renew")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public Loan renewLoan(@Valid @RequestBody Loan loan){
-        return loanService.renew(loan);
+        LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
+        LocalDate endDate = loan.getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
+        if(!now.isBefore(endDate)){
+            return loan;
+        }
+        else{
+            return loanService.renew(loan);
+        }
     }
 
 

@@ -6,11 +6,6 @@ FLUSH PRIVILEGES ;
 
 USE dbbooking;
 
-create table if not exists hibernate_sequence
-(
-    next_val bigint null
-);
-
 create table if not exists booking
 (
     id         int         not null

@@ -33,7 +33,7 @@ public class BookingRestController {
 
     @GetMapping(value="/booking/{id}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    public Booking selectLoan(@PathVariable int id) {
+    public Booking selectBooking(@PathVariable int id) {
         Booking booking = bookingService.findById(id);
         if(booking==null) throw new BookingNotFoundException("booking not found");
         return bookingService.findById(id);
@@ -49,8 +49,9 @@ public class BookingRestController {
 
 
     @PostMapping(value = "/addBooking")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public ResponseEntity<Void> addBooking(@Valid @RequestBody Booking booking) {
+        logger.info("add booking to bdd");
 
         if (booking == null){
             return ResponseEntity.noContent().build();}
@@ -70,7 +71,11 @@ public class BookingRestController {
                     .path("/{id}")
                     .buildAndExpand(booking.getId())
                     .toUri();
+
+
             return ResponseEntity.created(location).build();
+
+
         }
     }
 

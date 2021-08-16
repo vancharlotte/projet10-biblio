@@ -16,7 +16,7 @@
 <div class="container1 bg-light col-12 my-3 rounded">
 
     <div class="row justify-content-center py-3" style="height: 100px">
-        <h1> Mes emprunts </h1>
+        <h1> Mes Emprunts </h1>
     </div>
 
     <div class="row justify-content-center">
@@ -36,35 +36,33 @@
                 </thead>
 
                 <tbody>
-                <tr th:if="${map.isEmpty()}">
+                <tr th:if="${listLoansInfo==null}">
                     <td>aucun résultat</td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
 
 
-               </tr>
-                <tr th:each="entry  : ${map}">
-                    <div th:each="book : ${entry.value}">
-                        <td th:text="${book.title}"></td>
-                    </div>
-                    <div th:each="loan : ${entry.key}">
-                        <td th:text="${#dates.format(loan.startDate, 'dd-MM-yyyy')}"></td>
-                        <td th:text="${#dates.format(loan.endDate, 'dd-MM-yyyy')}"></td>
-                        <td>
-                            <a th:if="${loan.returned}"> Oui </a>
-                            <a th:unless="${loan.returned}"> Non </a>
-                        </td>
-                        <td>
-                            <a th:if="${loan.renewed}">
-                                <p class="text-secondary">emprunt déjà prolongé</p>
-                            </a>
-                            <a th:unless="${loan.renewed or loan.returned}" th:href="@{/loan/renew/{loanId}(loanId=${loan.id})}">
-                                <button type="button" class="btn btn-primary"> Prolongé</button>
-                            </a>
-                        </td>
-                    </div>
+                </tr>
+                <tr  th:each="loan  : ${listLoansInfo}">
+                    <td th:text="${loan.bookTitle}"></td>
+                    <td th:text="${#dates.format(loan.startDate, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${#dates.format(loan.endDate, 'dd-MM-yyyy')}"></td>
+                    <td>
+                        <a th:if="${loan.returned}"> Oui </a>
+                        <a th:unless="${loan.returned}"> Non </a>
+                    </td>
+                    <td>
+                        <a th:if="${loan.renewed}">
+                            <p class="text-secondary">emprunt déjà prolongé</p>
+                        </a>
+                        <a th:if="${loan.late}">
+                        <p class="text-secondary">la durée de votre emprunt est dépassée, veuillez retourner votre livre.</p>
+                        </a>
+                        <a th:unless="${loan.renewed or loan.returned or loan.late}" th:href="@{/loan/renew/{loanId}(loanId=${loan.loanId})}">
+                            <button type="button" class="btn btn-primary"> Prolongé</button>
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
