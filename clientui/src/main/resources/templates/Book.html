@@ -35,23 +35,28 @@
                     <span th:text="${book.summary}"></span>
                     <hr>
                     <h6>Nombre d'exemplaire disponible :
-                        <span th:text="${nbCopyAvailable}"></span> /
-                        <span th:text="${nbCopy}"></span>
+                        <span th:text="${nbCopyAvailable}"></span> exemplaire(s) disponible(s) /
+                        <span th:text="${nbCopy}"></span> exemplaires référencés.
 
                     </h6>
                     <hr>
                     <h6>liste d'attente :
-                        <span th:text="${nbBooking}"></span> /
+                        <span t th:text="${nbBooking}"></span>
+                        réservation(s) effectuée(s) /
                         <span th:text="${nbCopy*2}"></span>
+                        réservations possibles.
+
                         <hr>
-                        <a th:href="@{/addBooking/{bookId}(bookId=${book.id})}">
+                        <a th:if="${refusedBooking!=true}" th:href="@{/bookings/add/{bookId}(bookId=${book.id})}">
                             <button type="button" class="btn btn-primary"> Réserver </button>
                         </a>
+                        <a th:if="${refusedBooking==true}"> Ce livre se trouve actuellement dans votre liste de réservations ou d'emprunts en cours.</a>
 
                     </h6>
                     <hr>
-                    <h6>retour en stock estimé :
-                        <span  th:text="${returnDate}"></span>
+                    <h6 >retour en stock estimé :
+                        <span th:if="${returnDate!=null}" th:text="${#dates.format(returnDate, 'dd-MM-yyyy')}"></span>
+                        <span th:if="${returnDate==null}" th:text="disponible"></span>
 
                     </h6>
                 </div>

@@ -18,9 +18,8 @@ public interface LibraryBookingClient {
     @GetMapping(value="/library-booking/booking/{id}")
     BookingBean selectBooking(@PathVariable int id);
 
-    //à verif
-   // @GetMapping(value="/library-booking/bookings/{user}/{book}")
-   // BookingBean findByUserAndBook(@PathVariable int user, int book);
+    @GetMapping(value="/library-booking/bookings/find/{user}/{book}")
+    boolean findByUserAndBook(@PathVariable int user,@PathVariable int book);
 
     //@GetMapping(value = "/library-booking/bookings/{book}")
    // List<BookingBean> listBookingByBook(@PathVariable int book);
@@ -34,8 +33,8 @@ public interface LibraryBookingClient {
     @GetMapping(value ="/library-booking/bookings/{startDate}")
     List<BookingBean> listBookingByStartDate(@PathVariable Date date);
 
-    @GetMapping(value = "/library-booking/booking/delete/{id}")
-    boolean deleteBooking(@PathVariable int id);
+    @PutMapping(value = "/library-booking/bookings/delete/{id}")
+    void deleteBooking(@PathVariable int id);
 
     @PostMapping(value = "/library-booking/addBooking")
     ResponseEntity<Void> addBooking(@Valid @RequestBody BookingBean booking) ;

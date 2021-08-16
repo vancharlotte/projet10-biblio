@@ -39,10 +39,9 @@ public class BookingRestController {
         return bookingService.findById(id);
     }
 
-    @GetMapping(value="/bookings/{user}/{book}")
-    public Booking getBookingByUserByBook (@PathVariable int user, int book){
-        Booking booking = bookingService.findByUserAndBook(user,book);
-        if(booking==null) throw new BookingNotFoundException("booking not found");
+    @GetMapping(value="/bookings/find/{user}/{book}")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    public boolean findBookingByUserByBook (@PathVariable int user, @PathVariable int book){
         return bookingService.findByUserAndBook(user,book);
 
     }
@@ -53,7 +52,7 @@ public class BookingRestController {
     public ResponseEntity<Void> addBooking(@Valid @RequestBody Booking booking) {
         logger.info("add booking to bdd");
 
-        if (booking == null){
+        if ((booking == null)||(bookingService.findByUserAndBook(booking.getUser(), booking.getBook()))){
             return ResponseEntity.noContent().build();}
 
         else {
@@ -77,6 +76,12 @@ public class BookingRestController {
 
 
         }
+    }
+
+    @PutMapping(value = "/bookings/delete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    void deleteBooking(@PathVariable int id){
+        bookingService.deleteBooking(id);
     }
 
  // update booking when send notif client
@@ -126,13 +131,6 @@ public class BookingRestController {
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByBookOrderByStartDate(@PathVariable int book){
         return bookingService.findByBookOrderByStartDate(book);
-    }
-
-
-    @PutMapping(value = "/booking/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    public void deleteBooking(@PathVariable int id) {
-         bookingService.deleteBooking(id);
     }
 
 

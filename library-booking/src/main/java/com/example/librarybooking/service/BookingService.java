@@ -51,9 +51,13 @@ public class BookingService {
         bookingDao.deleteById(id);
     }
 
-    public Booking findByUserAndBook(int user, int book) {
+    public boolean findByUserAndBook(int user, int book) {
         Booking exist = bookingDao.findByUserAndBook(user,book);
-        if (exist == null) throw new BookingNotFoundException("booking not found");
-        return bookingDao.findByUserAndBook(user,book);
+        if (exist == null) {
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }

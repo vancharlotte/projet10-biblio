@@ -44,7 +44,7 @@ public class BookingController {
 
 
     @GetMapping("/bookings")
-    public String ListLoans(Model model) {
+    public String ListBookings(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) authentication.getPrincipal();
@@ -70,6 +70,7 @@ public class BookingController {
                 loanByCopy.addAll(loanByCopyByBook);
             }
 
+            //verif car returnDate = null
             Date date1 = null;
             for (LoanBean loanBean : loanByCopy) {
                 Date date2 = loanBean.getEndDate();
@@ -100,10 +101,10 @@ public class BookingController {
         return "ListBookings";
     }
 
-    @GetMapping("/addBooking/{bookId}")
+    @GetMapping("/bookings/add/{bookId}")
     public String addBooking(@PathVariable String bookId) {
+
         BookingBean booking = new BookingBean();
-        System.out.println(bookId);
 
         int id = Integer.parseInt(bookId);
         booking.setBook(id);
@@ -130,5 +131,14 @@ public class BookingController {
 
     }
 
+    @GetMapping("/bookings/delete/{bookingId}")
+    public String deleteBooking(@PathVariable String bookingId) {
+        int id = Integer.parseInt(bookingId);
+        logger.info("booking id "+ bookingId + "integer : " + id);
+        bookingClient.deleteBooking(id);
+
+        return "redirect:/bookings";
+
+    }
 
 }

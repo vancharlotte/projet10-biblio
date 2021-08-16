@@ -20,9 +20,7 @@ public interface BookingDao extends JpaRepository<Booking, Integer> {
 
     List<Booking> findByNotifDate(Date date);
 
-
     List<Booking> findByBookOrderByStartDate(int book);
-
 
     Booking findByUserAndBook(int user, int book);
 }
