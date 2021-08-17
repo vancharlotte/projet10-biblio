@@ -72,7 +72,14 @@ public class LoanRestController {
     @PutMapping(value = "/loan/renew")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public Loan renewLoan(@Valid @RequestBody Loan loan){
-        return loanService.renew(loan);
+        LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
+        LocalDate endDate = loan.getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
+        if(!now.isBefore(endDate)){
+            return loan;
+        }
+        else{
+            return loanService.renew(loan);
+        }
     }
 
 

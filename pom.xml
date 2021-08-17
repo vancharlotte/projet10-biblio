@@ -13,7 +13,7 @@
     <groupId>org.example</groupId>
     <artifactId>library</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1</version>
 
     <modules>
         <module>config-server</module>

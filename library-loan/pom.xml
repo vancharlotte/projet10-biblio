@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>library-loan</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1</version>
     <name>library loan</name>
     <description>microservice loan</description>
     <properties>
