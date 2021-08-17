@@ -109,13 +109,23 @@ public class BookingController {
         int id = Integer.parseInt(bookId);
         booking.setBook(id);
 
-        logger.info("add booking");
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) authentication.getPrincipal();
 
         AccountBean user = accountClient.findUsername(username);
         booking.setUser(user.getId());
+
+        logger.info("don't add booking");
+
+      /*  boolean loanExist=false;
+        List<CopyBean> copies = bookClient.listCopies(id);
+        for (CopyBean copy : copies) {
+            if (loanClient.existLoanByCopyAndUserAndNotReturned(copy.getId(), user.getId())) {
+                loanExist = true;
+            }
+        }
+
+        boolean bookingExist = bookingClient.findByUserAndBook(user.getId(),id);*/
 
         LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
         LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
@@ -124,6 +134,9 @@ public class BookingController {
 
         booking.setStartDate(timestamp);
 
+       /* if (!loanExist && !bookingExist){
+            logger.info("réservation impossible");
+        bookingClient.addBooking(booking);}*/
         bookingClient.addBooking(booking);
 
 
@@ -134,7 +147,6 @@ public class BookingController {
     @GetMapping("/bookings/delete/{bookingId}")
     public String deleteBooking(@PathVariable String bookingId) {
         int id = Integer.parseInt(bookingId);
-        logger.info("booking id "+ bookingId + "integer : " + id);
         bookingClient.deleteBooking(id);
 
         return "redirect:/bookings";

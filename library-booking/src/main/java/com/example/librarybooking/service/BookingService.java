@@ -54,9 +54,11 @@ public class BookingService {
     public boolean findByUserAndBook(int user, int book) {
         Booking exist = bookingDao.findByUserAndBook(user,book);
         if (exist == null) {
+            logger.info("booking doesn't exist");
             return false;
         }
         else{
+            logger.info("booking already exist");
             return true;
         }
     }

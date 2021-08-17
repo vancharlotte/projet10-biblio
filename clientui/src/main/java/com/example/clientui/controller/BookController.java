@@ -101,7 +101,16 @@ public class BookController {
 
         boolean bookingExist = bookingClient.findByUserAndBook(user.getId(), book.getId());
         boolean completelist = bookings.size() >= (copies.size() * 2);
-        if (bookingExist || completelist) {
+
+        boolean loanExist=false;
+        List<CopyBean> listCopies = bookClient.listCopies(id);
+        for (CopyBean copy : listCopies) {
+            if (loanClient.existLoanByCopyAndUserAndNotReturned(copy.getId(), user.getId())) {
+                loanExist = true;
+            }
+        }
+
+        if (bookingExist || loanExist || completelist ) {
             model.addAttribute("refusedBooking", true);
         }
 

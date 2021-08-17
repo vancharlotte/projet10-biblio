@@ -68,4 +68,15 @@ public class LoanService {
         if (exist == null) throw new LoanNotFoundException("loan not found");
         return loanDao.save(loan);
     }
+
+    public boolean existByCopyAndUserAndReturnedNot(int copy, int user) {
+        Loan exist = loanDao.findByUserAndCopyAndReturnedNot(user,copy, false);
+        if (exist!=null){
+            logger.info("LL : loan already exist");
+            // loan already exist
+            return true;}
+        else{            logger.info("LL :  loan doesn't exist");
+            return false;}
+
+    }
 }
