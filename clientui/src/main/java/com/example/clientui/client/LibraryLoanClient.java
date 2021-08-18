@@ -3,9 +3,11 @@ package com.example.clientui.client;
 import com.example.clientui.beans.LoanBean;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @FeignClient(name = "zuul-server", url="http://localhost:9004/")
@@ -29,6 +31,12 @@ public interface LibraryLoanClient {
 
     @GetMapping(value = "/library-loan/loans/copyAvailable/{copy}")
     boolean copyAvailable(@PathVariable int copy);
+
+    @PutMapping(value = "/loan/return/{loan}")
+    LoanBean returnLoan(@PathVariable int loan);
+
+    @PostMapping(value = "/loan")
+    ResponseEntity<Void> addLoan(@Valid @RequestBody LoanBean loan);
 
 
 

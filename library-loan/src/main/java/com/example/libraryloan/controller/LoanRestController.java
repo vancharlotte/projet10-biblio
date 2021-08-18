@@ -61,6 +61,7 @@ public class LoanRestController {
             loan.setRenewed(false);
             loanService.saveOrUpdate(loan);
 
+
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
@@ -87,10 +88,10 @@ public class LoanRestController {
 
 
     //returnLoan (for now, loan returned by employee only)
-    @PutMapping(value = "/loan/return")
+    @PutMapping(value = "/loan/return/{loan}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Loan returnLoan(@Valid @RequestBody Loan loan) {
-        return loanService.returnLoan(loan);
+    public Loan returnLoan(@PathVariable int loan) {
+        return loanService.returnLoan(loanService.findById(loan));
     }
 
 

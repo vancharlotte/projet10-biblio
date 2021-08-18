@@ -51,7 +51,7 @@ public class BookingService {
         bookingDao.deleteById(id);
     }
 
-    public boolean findByUserAndBook(int user, int book) {
+    public boolean existByUserAndBook(int user, int book) {
         Booking exist = bookingDao.findByUserAndBook(user,book);
         if (exist == null) {
             logger.info("booking doesn't exist");
@@ -61,5 +61,10 @@ public class BookingService {
             logger.info("booking already exist");
             return true;
         }
+    }
+
+    public Booking findByUserAndBook(int user, int book) {
+        return bookingDao.findByUserAndBook(user,book);
+
     }
 }

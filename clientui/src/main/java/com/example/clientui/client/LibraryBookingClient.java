@@ -19,7 +19,10 @@ public interface LibraryBookingClient {
     BookingBean selectBooking(@PathVariable int id);
 
     @GetMapping(value="/library-booking/bookings/find/{user}/{book}")
-    boolean findByUserAndBook(@PathVariable int user,@PathVariable int book);
+    BookingBean findByUserAndBook(@PathVariable int user,@PathVariable int book);
+
+    @GetMapping(value="/library-booking/bookings/exit/{user}/{book}")
+    boolean existByUserAndBook(@PathVariable int user,@PathVariable int book);
 
     //@GetMapping(value = "/library-booking/bookings/{book}")
    // List<BookingBean> listBookingByBook(@PathVariable int book);

@@ -99,7 +99,7 @@ public class BookController {
         String username = (String) authentication.getPrincipal();
         AccountBean user = accountClient.findUsername(username);
 
-        boolean bookingExist = bookingClient.findByUserAndBook(user.getId(), book.getId());
+        boolean bookingExist = bookingClient.existByUserAndBook(user.getId(), book.getId());
         boolean completelist = bookings.size() >= (copies.size() * 2);
 
         boolean loanExist=false;

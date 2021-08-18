@@ -41,10 +41,11 @@ public class BookingRestController {
 
     @GetMapping(value="/bookings/find/{user}/{book}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    public boolean findBookingByUserByBook (@PathVariable int user, @PathVariable int book){
+    public Booking findBookingByUserByBook (@PathVariable int user, @PathVariable int book){
         return bookingService.findByUserAndBook(user,book);
 
     }
+
 
 
     @PostMapping(value = "/addBooking")
@@ -52,7 +53,8 @@ public class BookingRestController {
     public ResponseEntity<Void> addBooking(@Valid @RequestBody Booking booking) {
         logger.info("add booking to bdd");
 
-        if ((booking == null)||(bookingService.findByUserAndBook(booking.getUser(), booking.getBook()))){
+
+        if ((booking == null)||(bookingService.existByUserAndBook(booking.getUser(), booking.getBook()))){
             return ResponseEntity.noContent().build();}
 
         else {
