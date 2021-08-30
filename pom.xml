@@ -24,6 +24,7 @@
         <module>library-booking</module>
         <module>zuul-server</module>
         <module>library-batch</module>
+        <module>library-batch-notif</module>
         <module>clientui</module>
     </modules>
 

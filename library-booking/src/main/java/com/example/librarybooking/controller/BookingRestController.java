@@ -129,6 +129,12 @@ public class BookingRestController {
         return bookingService.findByNotifDate(date);
     }
 
+    @GetMapping(value ="/bookings/{notifDateExpired}")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    public List<Booking> listBookingByNotifDateExpired(@PathVariable Date date){
+        return bookingService.findByNotifDateExpired(date);
+    }
+
     @GetMapping(value ="/bookings/book/{book}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByBookOrderByStartDate(@PathVariable int book){

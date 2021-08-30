@@ -42,6 +42,12 @@ public class BookingService {
         return bookingDao.findByNotifDate(date);
     }
 
+    public List<Booking> findByNotifDateExpired(Date date) {
+        return bookingDao.findByNotifDateExpired(date);
+    }
+
+
+
     public List<Booking> findByBookOrderByStartDate(int book) {
         return bookingDao.findByBookOrderByStartDate(book);
     }
