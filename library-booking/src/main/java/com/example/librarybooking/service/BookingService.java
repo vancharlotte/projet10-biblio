@@ -43,10 +43,10 @@ public class BookingService {
     }
 
     public List<Booking> findByNotifDateExpired(Date date) {
-        return bookingDao.findByNotifDateExpired(date);
+        List<Booking> bookings = bookingDao.findByNotifDateExpired(date);
+        System.out.println("size "+ bookings.size());
+        return bookings;
     }
-
-
 
     public List<Booking> findByBookOrderByStartDate(int book) {
         return bookingDao.findByBookOrderByStartDate(book);

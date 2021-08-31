@@ -19,9 +19,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,10 +69,7 @@ public class BatchConfig {
     @Bean
     public ListItemReader<BookingBean> bookingExpiredItemReader() throws IOException {
         System.out.println("item reader");
-        LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-        Timestamp timestamp = Timestamp.valueOf(String.valueOf(now));
-
-        return new ListItemReader<>(bookingProxy.listBookingByNotifDateExpired(timestamp));
+        return new ListItemReader<>(bookingProxy.listBookingByNotifDateExpired());
     }
 
 

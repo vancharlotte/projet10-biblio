@@ -28,7 +28,6 @@ public class BookingExpiredProcessor implements ItemProcessor<BookingBean, Booki
     @Autowired
     BookingProxy bookingProxy;
 
-    /*@Autowired*/
 
     @Override
     @Cacheable("booking")
@@ -40,7 +39,7 @@ public class BookingExpiredProcessor implements ItemProcessor<BookingBean, Booki
         bookingBean.setUserEmail(email);
         System.out.println(bookingBean.getUserEmail());
 
-        bookingProxy.deleteBooking(bookingBean.getId());
+        bookingProxy.deleteBookingExpired(bookingBean.getId());
 
         return bookingBean;
     }

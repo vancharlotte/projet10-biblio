@@ -86,6 +86,11 @@ public class BookingRestController {
         bookingService.deleteBooking(id);
     }
 
+    @PutMapping(value = "/bookings/delete/expired/{id}")
+    void deleteBookingExpired(@PathVariable int id){
+        bookingService.deleteBooking(id);
+    }
+
  // update booking when send notif client
     @PostMapping(value = "/notifBooking")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -129,10 +134,10 @@ public class BookingRestController {
         return bookingService.findByNotifDate(date);
     }
 
-    @GetMapping(value ="/bookings/{notifDateExpired}")
-    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    public List<Booking> listBookingByNotifDateExpired(@PathVariable Date date){
-        return bookingService.findByNotifDateExpired(date);
+    @GetMapping(value ="/bookings/expired")
+//    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    public List<Booking> listBookingByNotifDateExpired(){
+        return bookingService.findByNotifDateExpired(new Date());
     }
 
     @GetMapping(value ="/bookings/book/{book}")
