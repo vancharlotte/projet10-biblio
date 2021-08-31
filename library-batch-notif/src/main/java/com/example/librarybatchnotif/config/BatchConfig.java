@@ -1,5 +1,6 @@
 package com.example.librarybatchnotif.config;
 
+import com.example.librarybatchnotif.model.BookBean;
 import com.example.librarybatchnotif.model.LoanBean;
 import com.example.librarybatchnotif.model.BookingBean;
 import com.example.librarybatchnotif.proxy.BookingProxy;
@@ -19,7 +20,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -71,6 +74,7 @@ public class BatchConfig {
         System.out.println("item reader");
         return new ListItemReader<>(bookingProxy.listBookingByNotifDateExpired());
     }
+
 
 
     // job launch every hour

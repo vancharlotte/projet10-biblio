@@ -15,10 +15,7 @@ import javax.validation.Valid;
 
 import java.net.URI;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Date;
 import java.util.List;
 
@@ -107,6 +104,20 @@ public class BookingRestController {
 
     }
 
+    @PostMapping(value = "/notifNextBooking/{id}")
+    public void notifNextBooking(@PathVariable int id){
+        Clock cl = Clock.system(ZoneId.of("Europe/Paris"));
+        LocalDateTime now = LocalDateTime.now(cl);
+        Timestamp timestamp = Timestamp.valueOf(now);
+        logger.info(timestamp.toString());
+        System.out.println("update notif date");
+        Booking booking = bookingService.findById(id);
+        booking.setNotifDate(new Date());
+
+
+        bookingService.saveOrUpdate(booking);
+    }
+
 
 /*
     @PutMapping(value = "/booking/return")
@@ -141,7 +152,7 @@ public class BookingRestController {
     }
 
     @GetMapping(value ="/bookings/book/{book}")
-    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+   // @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByBookOrderByStartDate(@PathVariable int book){
         return bookingService.findByBookOrderByStartDate(book);
     }

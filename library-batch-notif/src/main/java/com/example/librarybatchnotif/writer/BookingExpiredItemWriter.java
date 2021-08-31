@@ -1,5 +1,6 @@
 package com.example.librarybatchnotif.writer;
 
+import com.example.librarybatchnotif.proxy.BookingProxy;
 import com.example.librarybatchnotif.service.EmailService;
 import com.example.librarybatchnotif.model.BookingBean;
 import org.springframework.batch.item.ItemWriter;
@@ -12,13 +13,16 @@ import java.util.List;
 public class BookingExpiredItemWriter implements ItemWriter<BookingBean> {
 
     @Autowired
+    BookingProxy bookingProxy;
+
+    @Autowired
     EmailService emailService;
 
     @Override
     public void write(List<? extends BookingBean> bookings) throws Exception {
-            for (BookingBean bookingExpired : bookings) {
-                System.out.println("item writer : " + bookingExpired.getUserEmail());
-                emailService.sendSimpleMessage(bookingExpired.getUserEmail(), emailTemplate());
+            for (BookingBean nextBooking : bookings) {
+                bookingProxy.notifNextBooking(nextBooking.getId());
+                emailService.sendSimpleMessage(nextBooking.getUserEmail(), emailTemplate());
             }
 
     }
