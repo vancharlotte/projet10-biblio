@@ -44,6 +44,12 @@ public class BookingRestController {
 
     }
 
+    @GetMapping(value="/bookings/exist/{user}/{book}")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    boolean existByUserAndBook(@PathVariable int user,@PathVariable int book){
+        return bookingService.existByUserAndBook(user,book);
+    }
+
 
 
     @PostMapping(value = "/addBooking")
@@ -56,12 +62,8 @@ public class BookingRestController {
             return ResponseEntity.noContent().build();}
 
         else {
-            LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-            LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
-            Timestamp timestamp = Timestamp.valueOf(nowMidnight);
-            logger.info(timestamp.toString());
 
-            booking.setStartDate(timestamp);
+            booking.setStartDate(new Date());
 
             bookingService.saveOrUpdate(booking);
 
@@ -84,10 +86,7 @@ public class BookingRestController {
         bookingService.deleteBooking(id);
     }
 
-    @PutMapping(value = "/bookings/delete/expired/{id}")
-    void deleteBookingExpired(@PathVariable int id){
-        bookingService.deleteBooking(id);
-    }
+
 
  // update booking when send notif client
     @PostMapping(value = "/notifBooking")
@@ -99,18 +98,6 @@ public class BookingRestController {
             bookingService.saveOrUpdate(booking);
 
     }
-
-    @PostMapping(value = "/notifNextBooking/{id}")
-    public void notifNextBooking(@PathVariable int id){
-
-                System.out.println("update notif date");
-        Booking booking = bookingService.findById(id);
-        booking.setNotifDate(new Date());
-
-
-        bookingService.saveOrUpdate(booking);
-    }
-
 
 /*
     @PutMapping(value = "/booking/return")
@@ -132,13 +119,25 @@ public class BookingRestController {
         return bookingService.findByBook(book);
     }
 
-    @GetMapping(value ="/bookings/{notifDate}")
-    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    public List<Booking> listBookingByNotifDate(@PathVariable Date date){
-        return bookingService.findByNotifDate(date);
+
+    @PutMapping(value = "/batch/bookings/delete/expired/{id}")
+    void deleteBookingExpired(@PathVariable int id){
+        bookingService.deleteBooking(id);
     }
 
-    @GetMapping(value ="/bookings/expired")
+    @PostMapping(value = "/batch/notifNextBooking/{id}")
+    public void notifNextBooking(@PathVariable int id){
+
+        System.out.println("update notif date");
+        Booking booking = bookingService.findById(id);
+        booking.setNotifDate(new Date());
+
+
+        bookingService.saveOrUpdate(booking);
+    }
+
+
+    @GetMapping(value ="/batch/bookings/expired")
 //    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByNotifDateExpired(){
         Calendar c = Calendar.getInstance();
@@ -148,11 +147,13 @@ public class BookingRestController {
         return bookingService.findByNotifDateExpired(c.getTime());
     }
 
-    @GetMapping(value ="/bookings/book/{book}")
+    @GetMapping(value = {"/batch/bookings/book/{book}", "/bookings/book/{book}"})
    // @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByBookOrderByStartDate(@PathVariable int book){
         return bookingService.findByBookOrderByStartDate(book);
     }
+
+
 
 
 }

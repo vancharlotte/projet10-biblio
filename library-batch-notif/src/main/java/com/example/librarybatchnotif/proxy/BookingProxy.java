@@ -14,16 +14,16 @@ import java.util.List;
 public interface BookingProxy {
 
 
-    @GetMapping(value = "/library-booking/bookings/expired")
+    @GetMapping(value = "/library-booking/batch/bookings/expired")
     List<BookingBean> listBookingByNotifDateExpired();
 
-    @PutMapping(value = "/library-booking/bookings/delete/expired/{id}")
+    @PutMapping(value = "/library-booking/batch/bookings/delete/expired/{id}")
     void deleteBookingExpired(@PathVariable int id);
 
-    @GetMapping(value = "/library-booking/bookings/book/{book}")
+    @GetMapping(value = "/library-booking/batch/bookings/book/{book}")
     List<BookingBean> listBookingByBookOrderByStartDate(@PathVariable int book);
 
-    @PostMapping(value = "/library-booking/notifNextBooking/{id}")
+    @PostMapping(value = "/library-booking/batch/notifNextBooking/{id}")
     void notifNextBooking(@PathVariable int id);
 
 }

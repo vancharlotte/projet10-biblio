@@ -21,7 +21,7 @@ public interface LibraryBookingClient {
     @GetMapping(value="/library-booking/bookings/find/{user}/{book}")
     BookingBean findByUserAndBook(@PathVariable int user,@PathVariable int book);
 
-    @GetMapping(value="/library-booking/bookings/exit/{user}/{book}")
+    @GetMapping(value="/library-booking/bookings/exist/{user}/{book}")
     boolean existByUserAndBook(@PathVariable int user,@PathVariable int book);
 
     //@GetMapping(value = "/library-booking/bookings/{book}")
@@ -32,9 +32,6 @@ public interface LibraryBookingClient {
 
     @GetMapping(value = "/library-booking/bookings/user/{user}")
     List<BookingBean> listBookingByUser(@PathVariable int user);
-
-    @GetMapping(value ="/library-booking/bookings/{startDate}")
-    List<BookingBean> listBookingByStartDate(@PathVariable Date date);
 
     @PutMapping(value = "/library-booking/bookings/delete/{id}")
     void deleteBooking(@PathVariable int id);
