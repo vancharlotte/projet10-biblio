@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.time.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -92,13 +93,8 @@ public class BookingRestController {
     @PostMapping(value = "/notifBooking")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void notifBooking(@Valid @RequestBody Booking booking) {
-
-            LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-            LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
-            Timestamp timestamp = Timestamp.valueOf(nowMidnight);
-            logger.info(timestamp.toString());
-
-            booking.setNotifDate(timestamp);
+    //TODO : verif que ca envoit mail de notif
+            booking.setNotifDate(new Date());
 
             bookingService.saveOrUpdate(booking);
 
@@ -106,11 +102,8 @@ public class BookingRestController {
 
     @PostMapping(value = "/notifNextBooking/{id}")
     public void notifNextBooking(@PathVariable int id){
-        Clock cl = Clock.system(ZoneId.of("Europe/Paris"));
-        LocalDateTime now = LocalDateTime.now(cl);
-        Timestamp timestamp = Timestamp.valueOf(now);
-        logger.info(timestamp.toString());
-        System.out.println("update notif date");
+
+                System.out.println("update notif date");
         Booking booking = bookingService.findById(id);
         booking.setNotifDate(new Date());
 
@@ -148,7 +141,11 @@ public class BookingRestController {
     @GetMapping(value ="/bookings/expired")
 //    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByNotifDateExpired(){
-        return bookingService.findByNotifDateExpired(new Date());
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE,-2);
+        System.out.println(c.toString());
+
+        return bookingService.findByNotifDateExpired(c.getTime());
     }
 
     @GetMapping(value ="/bookings/book/{book}")

@@ -54,7 +54,6 @@ public class BatchConfig {
    @CacheEvict(value = {"booking"}, allEntries = true)
     public Job mailJob() throws IOException {
 
-
        System.out.println("mail job");
         Step step1 = stepBuilderFactory.get("step-send-email")
                 .<BookingBean, BookingBean>chunk(100)
