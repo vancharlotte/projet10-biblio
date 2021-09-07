@@ -1,6 +1,5 @@
 package com.example.librarybook.service;
 
-import com.example.librarybook.controller.BookRestController;
 import com.example.librarybook.dao.BookDao;
 import com.example.librarybook.model.Book;
 import org.junit.jupiter.api.BeforeAll;
