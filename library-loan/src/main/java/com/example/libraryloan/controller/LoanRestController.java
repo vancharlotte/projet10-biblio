@@ -99,12 +99,7 @@ public class LoanRestController {
     @GetMapping(value ="/batch/loanNotReturnedOnTime")
     @PreAuthorize("isAuthenticated()")
     public List<Loan> listLoanNotReturnedOnTime(){
-        LocalDate today = LocalDate.now(ZoneId.of("Europe/Paris"));
-        LocalDateTime todayMidnight = LocalDateTime.of(today, LocalTime.MIDNIGHT);
-        Timestamp timestamp = Timestamp.valueOf(todayMidnight);
-        logger.info(timestamp.toString());
-
-        return loanService.findByEndDateLessThanAndReturnedFalse(timestamp);
+        return loanService.findByEndDateLessThanAndReturnedFalse(new Date());
     }
 
     @GetMapping(value ="/loans/{user}")

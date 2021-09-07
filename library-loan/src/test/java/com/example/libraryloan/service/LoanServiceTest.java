@@ -31,7 +31,7 @@ public class LoanServiceTest {
     private static List<Loan> loans = new ArrayList<>();
 
     @BeforeAll
-    public static void createListBooks() {
+    public static void createListLoans() {
         Loan loan1 = new Loan();
         loan1.setId(1);
         loan1.setUser(1);
@@ -55,9 +55,21 @@ public class LoanServiceTest {
     }
 
 
-    @Test
+  /*  @Test save dao ??
     public void saveOrUpdateTest() {
-    }
+        Loan loan3 = new Loan();
+        loan3.setId(3);
+        loan3.setUser(1);
+        loan3.setCopy(3);
+        loan3.setStartDate(new Date());
+        loan3.setEndDate(new Date());
+        loan3.setRenewed(true);
+        loan3.setReturned(false);
+
+        //Mockito.when(loanDaoMock.save(loan3)).thenReturn(loans);
+
+        assertEquals(loan3,loanService.saveOrUpdate(loan3));
+    }*/
 
     @Test
     public void findByEndDateLessThanAndReturnedFalseTest() {
@@ -91,7 +103,7 @@ public class LoanServiceTest {
 
     @Test
     public void findByCopyAndReturnedNotOrderByEndDateTest() {
-        Mockito.when(loanDaoMock.findByCopyAndReturnedNotOrderByEndDate(1,true)).thenReturn(loans);
+        Mockito.when(loanDaoMock.findByCopyAndReturnedNotOrderByEndDate(1,false)).thenReturn(loans);
         assertEquals(loans, loanService.findByCopyAndReturnedNotOrderByEndDate(1));
 
     }
@@ -143,6 +155,12 @@ public class LoanServiceTest {
 
     @Test
     public void existByCopyAndUserAndReturnedNotTest() {
+        Mockito.when(loanDaoMock.findByUserAndCopyAndReturnedNot(1,1,false)).thenReturn(loans.get(1));
+        assertEquals(true,loanService.existByCopyAndUserAndReturnedNot(1,1));
+
+        Mockito.when(loanDaoMock.findByUserAndCopyAndReturnedNot(1,1,false)).thenReturn(null);
+        assertEquals(false,loanService.existByCopyAndUserAndReturnedNot(1,1));
+
 
     }
 }
