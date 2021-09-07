@@ -1,8 +1,8 @@
-package com.example.librarybook.controller;
+package com.example.librarybook.service;
 
-import com.example.librarybook.exception.BookNotFoundException;
+import com.example.librarybook.controller.BookRestController;
+import com.example.librarybook.dao.BookDao;
 import com.example.librarybook.model.Book;
-import com.example.librarybook.service.BookService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,22 +11,20 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BookRestControllerTest {
-
+public class BookServiceTest {
 
     @InjectMocks
-    private BookRestController bookRestController;
+    private BookService bookService;
 
     @Mock
-    private BookService bookServiceMock;
+    private BookDao bookDaoMock;
 
     private static List<Book> books = new ArrayList<>();
 
@@ -57,30 +55,26 @@ public class BookRestControllerTest {
         books.add(book2);
     }
 
-
     @Test
-    public void listBooksTest() {
-        Mockito.when(bookServiceMock.findAll()).thenReturn(books);
-        assertEquals(2, bookRestController.listBooks().size());
+    public void findAllTest(){
+        Mockito.when(bookDaoMock.findAll()).thenReturn(books);
+        assertEquals(2, bookService.findAll().size());
     }
 
     @Test
-    public void searchBooksTest() {
-        when(bookServiceMock.findByString("titre")).thenReturn(books);
-        assertEquals(2, bookRestController.searchBooks("titre").size());
+    public void findByIdTest(){
+        when(bookDaoMock.findById(1)).thenReturn(books.get(0));
+        assertEquals("titre", bookService.findById(1).getTitle());
 
     }
 
     @Test
-    public void displayBookTest() {
-        when(bookServiceMock.findById(1)).thenReturn(books.get(0));
-        assertEquals("titre", bookRestController.displayBook(1).getTitle());
+    public void findByStringTest(){
+        when(bookDaoMock.findByTitleOrAuthorOrGenre("titre")).thenReturn(books);
+        assertEquals(2, bookService.findByString("titre").size());
+
     }
 
-    //expected throw "book not found"
-    @Test
-    public void displayBookExceptionTest() {
-        assertThrows(BookNotFoundException.class, () -> bookRestController.displayBook(3));
-    }
+
 
 }
