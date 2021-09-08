@@ -29,6 +29,11 @@ Cette application a été développé avec :
 Placez-vous à la racine des projets puis lancez un maven install.
 
 ##### 2 - Créez les 3 bases de données et un utilisateur : 
+Dans le terminal, lancez la commande : 
+- cd livrables
+- docker-compose up
+
+les bases de données mises en place : 
 - dbauth pour le microservice auth-server
 - dbbook pour le microservice library-book
 - dbloan pour le microservice library-loan
@@ -42,11 +47,11 @@ du module concerné.
 
 Pré défini : 
 - url de la bdd du module auth-server  
-spring.datasource.url=jdbc:mysql://localhost:3306/dbauth?createDatabaseIfNotExist=true
+spring.datasource.url=jdbc:mysql://localhost:6033/dbauth?createDatabaseIfNotExist=true
 - url de la bdd du module library-loan  
-spring.datasource.url=jdbc:mysql://localhost:3306/dbloan?createDatabaseIfNotExist=true
+spring.datasource.url=jdbc:mysql://localhost:6034/dbloan?createDatabaseIfNotExist=true
 - url de la bdd du module library-book  
-spring.datasource.url=jdbc:mysql://localhost:3306/dbbook?createDatabaseIfNotExist=true
+spring.datasource.url=jdbc:mysql://localhost:6035/dbbook?createDatabaseIfNotExist=true
 
 
 ##### 3 - Lancez tous les modules de l'application.    
@@ -70,3 +75,12 @@ Les ports ont été pré-défini pour chaque microservice :
 - zuul-server : port 9004
 - library-batch : port 9005
 - library-client : port 8000.
+
+
+### Maintenance
+les données de démo ont été mis à jour dans la base de données.
+Dans le terminal, lancez la commande : 
+- cd livrables
+- docker-compose down
+- docker-compose rm -v
+- docker-compose up
