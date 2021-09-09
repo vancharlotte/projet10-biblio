@@ -1,6 +1,5 @@
 package com.example.libraryloan.controller;
 
-import com.example.libraryloan.dao.LoanDao;
 import com.example.libraryloan.exception.LoanNotFoundException;
 import com.example.libraryloan.model.Loan;
 import com.example.libraryloan.service.LoanService;
