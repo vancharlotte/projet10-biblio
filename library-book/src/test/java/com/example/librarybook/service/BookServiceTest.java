@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,20 +57,21 @@ public class BookServiceTest {
     @Test
     public void findAllTest(){
         Mockito.when(bookDaoMock.findAll()).thenReturn(books);
-        assertEquals(2, bookService.findAll().size());
+        assertEquals(books, bookService.findAll());
     }
 
     @Test
     public void findByIdTest(){
-        when(bookDaoMock.findById(1)).thenReturn(books.get(0));
-        assertEquals("titre", bookService.findById(1).getTitle());
+        Mockito.when(bookDaoMock.findById(1)).thenReturn(books.get(0));
+        assertEquals(books.get(0), bookService.findById(1));
+        assertNull(bookService.findById(5));
 
     }
 
     @Test
     public void findByStringTest(){
         when(bookDaoMock.findByTitleOrAuthorOrGenre("titre")).thenReturn(books);
-        assertEquals(2, bookService.findByString("titre").size());
+        assertEquals(books, bookService.findByString("titre"));
 
     }
 

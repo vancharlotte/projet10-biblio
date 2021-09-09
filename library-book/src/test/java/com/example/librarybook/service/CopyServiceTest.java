@@ -1,6 +1,5 @@
 package com.example.librarybook.service;
 
-import com.example.librarybook.controller.CopyRestController;
 import com.example.librarybook.dao.CopyDao;
 import com.example.librarybook.model.Copy;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,7 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CopyServiceTest {
@@ -46,7 +46,9 @@ public class CopyServiceTest {
     @Test
     public void findByBookTest(){
         Mockito.when(copyDaoMock.findByBook(1)).thenReturn(copies);
-        assertEquals(2, copyService.findByBook(1).size());
+        assertEquals(copies, copyService.findByBook(1));
+        assertNull(copyService.findById(1));
+
 
 
     }
@@ -54,7 +56,9 @@ public class CopyServiceTest {
     @Test
     public void findByIdTest(){
         Mockito.when(copyDaoMock.findById(1)).thenReturn(copies.get(0));
-        assertEquals(1, copyService.findById(1).getBook());
+        assertEquals(copies.get(0), copyService.findById(1));
+        assertNotEquals(copies.get(1), copyService.findById(1));
+        assertNull(copyService.findById(2));
 
     }
 }

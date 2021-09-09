@@ -61,23 +61,27 @@ public class BookRestControllerTest {
     @Test
     public void listBooksTest() {
         Mockito.when(bookServiceMock.findAll()).thenReturn(books);
-        assertEquals(2, bookRestController.listBooks().size());
+        assertEquals(books, bookRestController.listBooks());
     }
 
     @Test
     public void searchBooksTest() {
         when(bookServiceMock.findByString("titre")).thenReturn(books);
-        assertEquals(2, bookRestController.searchBooks("titre").size());
+        assertEquals(books, bookRestController.searchBooks("titre"));
+        assertNotEquals(books, bookRestController.searchBooks("untitled"));
 
     }
 
     @Test
     public void displayBookTest() {
         when(bookServiceMock.findById(1)).thenReturn(books.get(0));
-        assertEquals("titre", bookRestController.displayBook(1).getTitle());
+        assertEquals(books.get(0), bookRestController.displayBook(1));
+        assertNotEquals(books.get(1), bookRestController.displayBook(1));
+
     }
 
-    //expected throw "book not found"
+
+        //expected throw "book not found"
     @Test
     public void displayBookExceptionTest() {
         assertThrows(BookNotFoundException.class, () -> bookRestController.displayBook(3));
