@@ -142,7 +142,6 @@ public class BookingRestController {
     public List<Booking> listBookingByNotifDateExpired(){
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE,-2);
-        System.out.println(c.toString());
 
         return bookingService.findByNotifDateExpired(c.getTime());
     }

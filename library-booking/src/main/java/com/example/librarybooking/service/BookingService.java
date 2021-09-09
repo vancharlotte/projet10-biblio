@@ -46,7 +46,6 @@ public class BookingService {
 
     public List<Booking> findByNotifDateExpired(Date date) {
         List<Booking> bookings = bookingDao.findByNotifDateExpired(date);
-        System.out.println("size "+ bookings.size());
         return bookings;
     }
 
