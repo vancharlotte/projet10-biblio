@@ -3,7 +3,6 @@ package com.example.libraryloan.service;
 import com.example.libraryloan.dao.LoanDao;
 import com.example.libraryloan.exception.LoanNotFoundException;
 import com.example.libraryloan.model.Loan;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class LoanServiceTest {
@@ -80,7 +78,7 @@ public class LoanServiceTest {
     @Test
     public void findByIdTest() {
         Mockito.when(loanDaoMock.findById(1)).thenReturn(loans.get(0));
-        assertEquals(1, loanService.findById(1).getCopy());
+        assertEquals(loans.get(0), loanService.findById(1));
     }
 
   /*  @Test
@@ -92,7 +90,7 @@ public class LoanServiceTest {
     @Test
     public void findByUserTest() {
         Mockito.when(loanDaoMock.findByUser(1)).thenReturn(loans);
-        assertEquals(2, loanService.findByUser(1).size());
+        assertEquals(loans, loanService.findByUser(1));
     }
 
   /*  @Test
@@ -120,6 +118,7 @@ public class LoanServiceTest {
 
     @Test
     public void renewTest() {
+        // a revoir
         Mockito.when(loanDaoMock.findById(1)).thenReturn(loans.get(0));
         loans.get(0).setRenewed(true);
         Mockito.when(loanDaoMock.save(loans.get(0))).thenReturn(loans.get(0));
@@ -139,6 +138,7 @@ public class LoanServiceTest {
 
     @Test
     public void returnLoanTest() {
+      // a revoir
         Mockito.when(loanDaoMock.findById(2)).thenReturn(loans.get(1));
         loans.get(1).setReturned(true);
         Mockito.when(loanDaoMock.save(loans.get(1))).thenReturn(loans.get(1));
@@ -156,10 +156,10 @@ public class LoanServiceTest {
     @Test
     public void existByCopyAndUserAndReturnedNotTest() {
         Mockito.when(loanDaoMock.findByUserAndCopyAndReturnedNot(1,1,false)).thenReturn(loans.get(1));
-        assertEquals(true,loanService.existByCopyAndUserAndReturnedNot(1,1));
+        assertTrue(loanService.existByCopyAndUserAndReturnedNot(1,1));
 
         Mockito.when(loanDaoMock.findByUserAndCopyAndReturnedNot(1,1,false)).thenReturn(null);
-        assertEquals(false,loanService.existByCopyAndUserAndReturnedNot(1,1));
+        assertFalse(loanService.existByCopyAndUserAndReturnedNot(1,1));
 
 
     }

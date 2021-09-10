@@ -12,13 +12,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -111,14 +107,14 @@ public class LoanRestControllerTest {
     @Test
     public void listLoans(){
         Mockito.when(loanServiceMock.findByUser(1)).thenReturn(loans);
-        assertEquals(2,loanRestController.listLoans(1).size());
+        assertEquals(loans,loanRestController.listLoans(1));
 
     }
 
     @Test
     public void listLoansByCopyAndReturnedNot(){
         Mockito.when(loanServiceMock.findByCopyAndReturnedNotOrderByEndDate(1)).thenReturn(loans);
-        assertEquals(2,loanRestController.listLoansByCopyAndReturnedNot(1).size());
+        assertEquals(loans,loanRestController.listLoansByCopyAndReturnedNot(1));
     }
 
     @Test
