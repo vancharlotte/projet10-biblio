@@ -100,18 +100,33 @@ public class BookingRestControllerTest {
            //  bookingService.saveOrUpdate(booking);
     }
 
-    @Test
+  /*  @Test
     public void deleteBookingTest(){
         // bookingService.deleteBooking(id);
     }
 
+  @Test
+  public void deleteBookingExpiredTest(){
+      // bookingService.deleteBooking(id);
+  }*/
 
-    // update booking when send notif client
+
     @Test
     public void notifBookingTest() {
-       // booking.setNotifDate(new Date());
+        Booking booking3 = bookings.get(0);
+        Mockito.when(bookServiceMock.saveOrUpdate(booking3)).thenReturn(booking3);
+        bookingRestController.notifBooking(bookings.get(0));
+        assertNotNull(booking3.getNotifDate());
 
-        //bookingService.saveOrUpdate(booking);
+    }
+
+    @Test
+    public void notifNextBookingtTest(){
+        Booking booking3 = bookings.get(0);
+        Mockito.when(bookServiceMock.findById(bookings.get(0).getId())).thenReturn(booking3);
+        Mockito.when(bookServiceMock.saveOrUpdate(booking3)).thenReturn(booking3);
+        bookingRestController.notifNextBooking(bookings.get(0).getId());
+        assertNotNull(booking3.getNotifDate());
 
     }
 
@@ -134,17 +149,6 @@ public class BookingRestControllerTest {
 
     }
 
-    @Test
-    public void deleteBookingExpiredTest(){
-        // bookingService.deleteBooking(id);
-    }
-
-    @Test
-    public void notifNextBookingtTest(){
-        //Booking booking = bookingService.findById(id);
-      //  booking.setNotifDate(new Date());
-         // bookingService.saveOrUpdate(booking);
-    }
 
     @Test
     public void listBookingByNotifDateExpiredTest(){

@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,19 +45,21 @@ public class LoanRestController {
     //addLoan (for now, new loan added by employee only)
     @PostMapping(value = "/loan")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> addLoan(@Valid @RequestBody Loan loan) {
+    public ResponseEntity<Void> addLoan(@Valid @RequestBody Loan loan) throws ParseException {
 
         if (loan == null){
             return ResponseEntity.noContent().build();}
 
         else {
-            LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
+         /*   LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
             LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
             Timestamp timestamp = Timestamp.valueOf(nowMidnight);
-            logger.info(timestamp.toString());
+            logger.info(timestamp.toString());*/
 
-            loan.setStartDate(timestamp);
-            loan.setEndDate(Timestamp.valueOf(nowMidnight.plusDays(28)));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            loan.setStartDate(simpleDateFormat.parse(LocalDate.now().toString()));
+            loan.setEndDate(simpleDateFormat.parse(LocalDate.now().plusDays(28).toString()));
             loan.setReturned(false);
             loan.setRenewed(false);
             loanService.saveOrUpdate(loan);
@@ -72,11 +75,11 @@ public class LoanRestController {
     }
 
 
-    //renewLoan
+    //TODO vérif date
     @PutMapping(value = "/loan/renew")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public Loan renewLoan(@Valid @RequestBody Loan loan){
-        LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
+        LocalDate now = LocalDate.now();
         LocalDate endDate = loan.getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
         if(!now.isBefore(endDate)){
             return loan;

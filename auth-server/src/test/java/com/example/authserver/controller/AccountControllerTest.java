@@ -5,10 +5,6 @@ import com.example.authserver.model.Account;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountControllerTest {

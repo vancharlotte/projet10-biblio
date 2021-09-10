@@ -12,6 +12,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,23 +32,31 @@ public class LoanRestControllerTest {
     private static List<Loan> loans = new ArrayList<>();
 
     @BeforeAll
-    public static void createListBooks() {
+    public static void createListBooks() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date startDate1 = simpleDateFormat.parse(LocalDate.now().minusDays(26).toString());
+        Date endDate1 = simpleDateFormat.parse(LocalDate.now().plusDays(2).toString());
+
+        Date startDate2 = simpleDateFormat.parse(LocalDate.now().minusDays(30).toString());
+        Date endDate2 = simpleDateFormat.parse(LocalDate.now().minusDays(2).toString());
+
         Loan loan1 = new Loan();
         loan1.setId(1);
         loan1.setUser(1);
         loan1.setCopy(1);
-        loan1.setStartDate(new Date());
-        loan1.setEndDate(new Date());
+        loan1.setStartDate(startDate1);
+        loan1.setEndDate(endDate1);
         loan1.setRenewed(false);
-        loan1.setReturned(true);
+        loan1.setReturned(false);
 
         Loan loan2 = new Loan();
         loan2.setId(2);
         loan2.setUser(1);
         loan2.setCopy(1);
-        loan2.setStartDate(new Date());
-        loan2.setEndDate(new Date());
-        loan2.setRenewed(true);
+        loan2.setStartDate(startDate2);
+        loan2.setEndDate(endDate2);
+        loan2.setRenewed(false);
         loan2.setReturned(false);
 
         loans.add(loan1);
@@ -65,44 +75,44 @@ public class LoanRestControllerTest {
         assertThrows(LoanNotFoundException.class, () -> loanRestController.selectLoan(1));
     }
 
-  /*  @Test
-    public void addLoan(){ }*/
+ /*   @Test
+    public void addLoan() throws ParseException {
+        Loan loan3 = new Loan();
+        loan3.setUser(1);
+        loan3.setCopy(3);
+
+        Mockito.when(loanServiceMock.saveOrUpdate(Mockito.any(Loan.class)))
+                .thenAnswer(i -> i.getArguments()[0]);
+    }*/
 
     @Test
     public void renewLoan() throws ParseException {
-        //vérifie si endDATE est pas dépassé d'abord
-
-       /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        Date date1 = simpleDateFormat.parse(LocalDate.now().minusDays(2).toString());
-        loans.get(0).setEndDate(date1);
-        Loan loan3 = loans.get(0);
-        loan3.setRenewed(false);
+        // if endDate after now : renew
+        Loan loan3 = new Loan();
+        loan3.setRenewed(true);
         Mockito.when(loanServiceMock.renew(loans.get(0))).thenReturn(loan3);
-        assertFalse(loanRestController.renewLoan(loans.get(0)).isRenewed());
-
-
-        Date date2 = simpleDateFormat.parse(LocalDate.now().plusDays(2).toString());
-        loans.get(0).setEndDate(date2);
-        Loan loan4 = loans.get(0);
-        //loan4.setRenewed(true);
-        Mockito.when(loanServiceMock.renew(loans.get(0))).thenReturn(loan4);
         assertTrue(loanRestController.renewLoan(loans.get(0)).isRenewed());
-        */
+
+        // si endDate before now : not renew
+        assertFalse(loanRestController.renewLoan(loans.get(1)).isRenewed());
 
     }
 
-    /*
+
     @Test
     public void returnLoan(){
-        Mockito.when(loanServiceMock.returnLoan(loanService.findById(loan));
-    }*/
+        Loan loan3 = new Loan();
+        loan3.setReturned(true);
+        Mockito.when(loanServiceMock.findById(loans.get(0).getId())).thenReturn(loans.get(0));
+        Mockito.when(loanServiceMock.returnLoan(loans.get(0))).thenReturn(loan3);
+        assertTrue(loanRestController.returnLoan(loans.get(0).getId()).isReturned());
+    }
 
-   /* @Test
+    @Test
     public void listLoanNotReturnedOnTime()  {
         Mockito.when(loanServiceMock.findByEndDateLessThanAndReturnedFalse(new Date())).thenReturn(loans);
-        assertEquals(2,loanRestController.listLoanNotReturnedOnTime().size());
-    }*/
+        assertEquals(loans,loanRestController.listLoanNotReturnedOnTime());
+    }
 
     @Test
     public void listLoans(){

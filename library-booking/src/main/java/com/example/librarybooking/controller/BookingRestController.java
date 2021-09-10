@@ -94,9 +94,15 @@ public class BookingRestController {
     public void notifBooking(@Valid @RequestBody Booking booking) {
     //TODO : verif que ca envoit mail de notif
             booking.setNotifDate(new Date());
-
             bookingService.saveOrUpdate(booking);
 
+    }
+
+    @PostMapping(value = "/batch/notifNextBooking/{id}")
+    public void notifNextBooking(@PathVariable int id){
+        Booking booking = bookingService.findById(id);
+        booking.setNotifDate(new Date());
+        bookingService.saveOrUpdate(booking);
     }
 
 /*
@@ -125,16 +131,6 @@ public class BookingRestController {
         bookingService.deleteBooking(id);
     }
 
-    @PostMapping(value = "/batch/notifNextBooking/{id}")
-    public void notifNextBooking(@PathVariable int id){
-
-        System.out.println("update notif date");
-        Booking booking = bookingService.findById(id);
-        booking.setNotifDate(new Date());
-
-
-        bookingService.saveOrUpdate(booking);
-    }
 
 
     @GetMapping(value ="/batch/bookings/expired")

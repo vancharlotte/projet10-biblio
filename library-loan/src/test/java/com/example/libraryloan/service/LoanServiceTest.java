@@ -37,7 +37,7 @@ public class LoanServiceTest {
         loan1.setStartDate(new Date());
         loan1.setEndDate(new Date());
         loan1.setRenewed(false);
-        loan1.setReturned(true);
+        loan1.setReturned(false);
 
         Loan loan2 = new Loan();
         loan2.setId(2);
@@ -53,7 +53,7 @@ public class LoanServiceTest {
     }
 
 
-  /*  @Test save dao ??
+    @Test
     public void saveOrUpdateTest() {
         Loan loan3 = new Loan();
         loan3.setId(3);
@@ -64,15 +64,16 @@ public class LoanServiceTest {
         loan3.setRenewed(true);
         loan3.setReturned(false);
 
-        //Mockito.when(loanDaoMock.save(loan3)).thenReturn(loans);
-
+        Mockito.when(loanDaoMock.save(Mockito.any(Loan.class)))
+                .thenAnswer(i -> i.getArguments()[0]);
         assertEquals(loan3,loanService.saveOrUpdate(loan3));
-    }*/
+    }
 
-    @Test
+   @Test
     public void findByEndDateLessThanAndReturnedFalseTest() {
-        Mockito.when(loanDaoMock.findByEndDateLessThanAndReturnedFalse(new Date())).thenReturn(loans);
-        assertEquals(loans, loanService.findByEndDateLessThanAndReturnedFalse(new Date()));
+        Date date = new Date();
+        Mockito.when(loanDaoMock.findByEndDateLessThanAndReturnedFalse(date)).thenReturn(loans);
+        assertEquals(loans, loanService.findByEndDateLessThanAndReturnedFalse(date));
     }
 
     @Test
@@ -81,11 +82,6 @@ public class LoanServiceTest {
         assertEquals(loans.get(0), loanService.findById(1));
     }
 
-  /*  @Test
-    public void findByIdExceptionTest() {
-        Mockito.when(loanDaoMock.findById(3)).thenReturn(null);
-        assertThrows(LoanNotFoundException.class, () -> loanService.findById(3));
-    }*/
 
     @Test
     public void findByUserTest() {
@@ -93,11 +89,6 @@ public class LoanServiceTest {
         assertEquals(loans, loanService.findByUser(1));
     }
 
-  /*  @Test
-    public void findByUserExceptionTest() {
-        Mockito.when(loanDaoMock.findByUser(1)).thenReturn(null);
-        assertThrows(LoanNotFoundException.class, () -> loanService.findByUser(1));
-    }*/
 
     @Test
     public void findByCopyAndReturnedNotOrderByEndDateTest() {
@@ -109,22 +100,24 @@ public class LoanServiceTest {
     @Test
     public void copyAvailableTest() {
         Mockito.when(loanDaoMock.existsByCopyAndReturned(1, false)).thenReturn(false);
-        assertEquals(true, loanService.copyAvailable(1));
+        assertTrue(loanService.copyAvailable(1));
 
         Mockito.when(loanDaoMock.existsByCopyAndReturned(1, false)).thenReturn(true);
-        assertEquals(false, loanService.copyAvailable(1));
+        assertFalse(loanService.copyAvailable(1));
 
     }
 
     @Test
     public void renewTest() {
-        // a revoir
+        Loan loan3 = loans.get(0);
+        loan3.setRenewed(true);
         Mockito.when(loanDaoMock.findById(1)).thenReturn(loans.get(0));
-        loans.get(0).setRenewed(true);
-        Mockito.when(loanDaoMock.save(loans.get(0))).thenReturn(loans.get(0));
-        assertEquals(loans.get(0).isRenewed(), loanService.renew(loans.get(0)).isRenewed());
+        Mockito.when(loanDaoMock.findById(2)).thenReturn(loans.get(1));
+        Mockito.when(loanDaoMock.save(loans.get(0))).thenReturn(loan3);
+        Mockito.when(loanDaoMock.save(loans.get(1))).thenReturn(loans.get(1));
 
-        loans.get(0).setRenewed(false);
+        assertTrue(loanService.renew(loans.get(0)).isRenewed());
+        assertTrue(loanService.renew(loans.get(1)).isRenewed());
 
     }
 
@@ -138,13 +131,12 @@ public class LoanServiceTest {
 
     @Test
     public void returnLoanTest() {
-      // a revoir
-        Mockito.when(loanDaoMock.findById(2)).thenReturn(loans.get(1));
-        loans.get(1).setReturned(true);
-        Mockito.when(loanDaoMock.save(loans.get(1))).thenReturn(loans.get(1));
-        assertEquals(loans.get(1).isReturned(), loanService.returnLoan(loans.get(1)).isReturned());
+        Loan loan3 = loans.get(0);
+        loan3.setReturned(true);
+        Mockito.when(loanDaoMock.findById(1)).thenReturn(loans.get(0));
+        Mockito.when(loanDaoMock.save(loans.get(0))).thenReturn(loan3);
+        assertTrue(loanService.returnLoan(loans.get(0)).isReturned());
 
-        loans.get(1).setReturned(false);
     }
 
     @Test
