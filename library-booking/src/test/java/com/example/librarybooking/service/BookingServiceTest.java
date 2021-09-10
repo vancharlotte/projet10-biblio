@@ -56,7 +56,10 @@ public class BookingServiceTest {
 
     @Test
     public void saveOrUpdateTest() {
-        // bookingDao.save(booking);
+        Booking booking3 = new Booking();
+        Mockito.when(bookingDaoMock.save(Mockito.any(Booking.class)))
+                .thenAnswer(i -> i.getArguments()[0]);
+        assertEquals(booking3, bookingService.saveOrUpdate(booking3));
     }
 
     @Test
