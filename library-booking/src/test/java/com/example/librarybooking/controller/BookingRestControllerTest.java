@@ -10,7 +10,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -28,7 +34,7 @@ public class BookingRestControllerTest {
     private BookingRestController bookingRestController;
 
     @Mock
-    private BookingService bookServiceMock;
+    private BookingService bookingServiceMock;
 
     private static List<Booking> bookings = new ArrayList<>();
 
@@ -58,33 +64,33 @@ public class BookingRestControllerTest {
 
     @Test
     public void selectBookingTest() {
-        Mockito.when(bookServiceMock.findById(1)).thenReturn(bookings.get(0));
+        Mockito.when(bookingServiceMock.findById(1)).thenReturn(bookings.get(0));
         assertEquals(bookings.get(0),bookingRestController.selectBooking(1));
         assertNotEquals(bookings.get(1), bookingRestController.selectBooking(1));
     }
 
     @Test
     public void selectBookingExceptionTest() {
-        Mockito.when(bookServiceMock.findById(1)).thenReturn(null);
+        Mockito.when(bookingServiceMock.findById(1)).thenReturn(null);
         assertThrows(BookingNotFoundException.class, () -> bookingRestController.selectBooking(1));
     }
 
     @Test
     public void findBookingByUserByBookTest (){
-        Mockito.when(bookServiceMock.findByUserAndBook(1,1)).thenReturn(bookings.get(0));
+        Mockito.when(bookingServiceMock.findByUserAndBook(1,1)).thenReturn(bookings.get(0));
         assertEquals(bookings.get(0),bookingRestController.findBookingByUserByBook(1,1));
         assertNotEquals(bookings.get(0),bookingRestController.findBookingByUserByBook(2,1));
 
-        Mockito.when(bookServiceMock.findByUserAndBook(1,5)).thenReturn(null);
+        Mockito.when(bookingServiceMock.findByUserAndBook(1,5)).thenReturn(null);
         assertEquals(null,bookingRestController.findBookingByUserByBook(1,5));
     }
 
     @Test
     public void existByUserAndBookTest(){
-        Mockito.when(bookServiceMock.existByUserAndBook(1,1)).thenReturn(true);
+        Mockito.when(bookingServiceMock.existByUserAndBook(1,1)).thenReturn(true);
         assertTrue(bookingRestController.existByUserAndBook(1,1));
 
-        Mockito.when(bookServiceMock.existByUserAndBook(1,5)).thenReturn(false);
+        Mockito.when(bookingServiceMock.existByUserAndBook(1,5)).thenReturn(false);
         assertFalse(bookingRestController.existByUserAndBook(1,5));
 
     }
@@ -93,28 +99,40 @@ public class BookingRestControllerTest {
 
     @Test
     public void addBookingTest() {
-       // test if booking est null
+        assertEquals(ResponseEntity.noContent().build(), bookingRestController.addBooking(null));
 
-        //  else si pas null :
-            // booking.setStartDate(new Date());
-           //  bookingService.saveOrUpdate(booking);
+        Booking booking3 =new Booking();
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(booking3.getId())
+                .toUri();
+        assertEquals(ResponseEntity.created(location).build(), bookingRestController.addBooking(booking3));
     }
 
-  /*  @Test
+    @Test
     public void deleteBookingTest(){
-        // bookingService.deleteBooking(id);
+        int expected = 0;
+        bookingRestController.deleteBooking(expected);
+        Mockito.verify(bookingServiceMock).deleteBooking(expected);
     }
 
   @Test
   public void deleteBookingExpiredTest(){
-      // bookingService.deleteBooking(id);
-  }*/
+        int expected = 0;
+        bookingRestController.deleteBooking(expected);
+        Mockito.verify(bookingServiceMock).deleteBooking(expected);
+  }
 
 
     @Test
     public void notifBookingTest() {
         Booking booking3 = bookings.get(0);
-        Mockito.when(bookServiceMock.saveOrUpdate(booking3)).thenReturn(booking3);
+        Mockito.when(bookingServiceMock.saveOrUpdate(booking3)).thenReturn(booking3);
         bookingRestController.notifBooking(bookings.get(0));
         assertNotNull(booking3.getNotifDate());
 
@@ -123,8 +141,8 @@ public class BookingRestControllerTest {
     @Test
     public void notifNextBookingtTest(){
         Booking booking3 = bookings.get(0);
-        Mockito.when(bookServiceMock.findById(bookings.get(0).getId())).thenReturn(booking3);
-        Mockito.when(bookServiceMock.saveOrUpdate(booking3)).thenReturn(booking3);
+        Mockito.when(bookingServiceMock.findById(bookings.get(0).getId())).thenReturn(booking3);
+        Mockito.when(bookingServiceMock.saveOrUpdate(booking3)).thenReturn(booking3);
         bookingRestController.notifNextBooking(bookings.get(0).getId());
         assertNotNull(booking3.getNotifDate());
 
@@ -132,19 +150,19 @@ public class BookingRestControllerTest {
 
     @Test
     public void listBookingByUserTest(){
-        Mockito.when(bookServiceMock.findByUser(1)).thenReturn(bookings);
+        Mockito.when(bookingServiceMock.findByUser(1)).thenReturn(bookings);
         assertEquals(bookings, bookingRestController.listBookingByUser(1));
 
-        Mockito.when(bookServiceMock.findByUser(5)).thenReturn(null);
+        Mockito.when(bookingServiceMock.findByUser(5)).thenReturn(null);
         assertNull( bookingRestController.listBookingByUser(5));
     }
 
     @Test
     public void listBookingByBookTest(){
-        Mockito.when(bookServiceMock.findByBook(1)).thenReturn(bookings);
+        Mockito.when(bookingServiceMock.findByBook(1)).thenReturn(bookings);
         assertEquals(bookings, bookingRestController.listBookingByBook(1));
 
-        Mockito.when(bookServiceMock.findByBook(5)).thenReturn(null);
+        Mockito.when(bookingServiceMock.findByBook(5)).thenReturn(null);
         assertNull( bookingRestController.listBookingByBook(5));
 
     }
@@ -154,14 +172,14 @@ public class BookingRestControllerTest {
     public void listBookingByNotifDateExpiredTest(){
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE,-2);
-        Mockito.when(bookServiceMock.findByNotifDateExpired(c.getTime())).thenReturn(bookings);
+        Mockito.when(bookingServiceMock.findByNotifDateExpired(c.getTime())).thenReturn(bookings);
         assertEquals(bookings, bookingRestController.listBookingByNotifDateExpired());
 
     }
 
     @Test
     public void listBookingByBookOrderByStartDateTest(){
-        Mockito.when(bookServiceMock.findByBookOrderByStartDate(1)).thenReturn(bookings);
+        Mockito.when(bookingServiceMock.findByBookOrderByStartDate(1)).thenReturn(bookings);
         assertEquals(bookings,bookingRestController.listBookingByBookOrderByStartDate(1));
     }
 }

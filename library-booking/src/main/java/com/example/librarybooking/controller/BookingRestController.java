@@ -82,7 +82,7 @@ public class BookingRestController {
 
     @PutMapping(value = "/bookings/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    void deleteBooking(@PathVariable int id){
+    public void deleteBooking(@PathVariable int id){
         bookingService.deleteBooking(id);
     }
 

@@ -10,7 +10,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -75,15 +81,26 @@ public class LoanRestControllerTest {
         assertThrows(LoanNotFoundException.class, () -> loanRestController.selectLoan(1));
     }
 
- /*   @Test
+   @Test
     public void addLoan() throws ParseException {
+        assertEquals(ResponseEntity.noContent().build(), loanRestController.addLoan(null));
+
         Loan loan3 = new Loan();
         loan3.setUser(1);
         loan3.setCopy(3);
 
-        Mockito.when(loanServiceMock.saveOrUpdate(Mockito.any(Loan.class)))
-                .thenAnswer(i -> i.getArguments()[0]);
-    }*/
+       MockHttpServletRequest request = new MockHttpServletRequest();
+       RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+       URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+               .buildAndExpand(loan3.getId())
+               .toUri();
+        assertEquals(ResponseEntity.created(location).build(), loanRestController.addLoan(loan3));
+
+
+    }
 
     @Test
     public void renewLoan() throws ParseException {

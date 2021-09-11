@@ -107,12 +107,13 @@ public class BookingServiceTest {
         Mockito.when(bookingDaoMock.findByBookOrderByStartDate(1)).thenReturn(bookings);
         assertEquals(bookings, bookingService.findByBookOrderByStartDate(1));
         assertEquals(new ArrayList<>(), bookingService.findByBookOrderByStartDate(5));
-        // bookingDao.findByBookOrderByStartDate(book);
     }
 
     @Test
     public void deleteBookingTest() {
-        //bookingDao.deleteById(id);
+        int expected = 0;
+        bookingService.deleteBooking(expected);
+        Mockito.verify(bookingDaoMock).deleteById(expected);
     }
 
     @Test
