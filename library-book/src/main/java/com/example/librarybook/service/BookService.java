@@ -32,14 +32,13 @@ public class BookService {
     }
 
     public Page<Book> findPaginated(int pageNo, int pageSize){
-
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        return this.bookDao.findAll(pageable);
+        return bookDao.findAll(pageable);
     }
 
     public Page<Book> findSearchPaginated(String word, int pageNo, int pageSize){
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        return this.bookDao.findByTitleOrAuthorOrGenre(word.toLowerCase(), pageable);
+        return bookDao.findByTitleOrAuthorOrGenre(word.toLowerCase(), pageable);
     }
 
 }

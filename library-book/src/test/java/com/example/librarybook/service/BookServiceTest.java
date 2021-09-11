@@ -9,11 +9,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,6 +76,23 @@ public class BookServiceTest {
         when(bookDaoMock.findByTitleOrAuthorOrGenre("titre")).thenReturn(books);
         assertEquals(books, bookService.findByString("titre"));
 
+    }
+
+    @Test
+    public void findPaginatedTest(){
+        bookService.findPaginated(2,10);
+
+        Pageable pageable = PageRequest.of(1, 10);
+        Mockito.verify(bookDaoMock).findAll(pageable);
+
+    }
+
+    @Test
+    public void findSearchPaginatedTest(){
+        bookService.findSearchPaginated("TITLE",2,10);
+
+        Pageable pageable = PageRequest.of(1, 10);
+        Mockito.verify(bookDaoMock).findByTitleOrAuthorOrGenre("title", pageable);
     }
 
 
