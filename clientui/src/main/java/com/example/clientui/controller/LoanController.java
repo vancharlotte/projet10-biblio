@@ -13,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -39,18 +42,39 @@ public class LoanController {
         AccountBean user = accountClient.findUsername(username);
 
         List<LoanBean> loans = loanClient.listLoans(user.getId());
-        LinkedHashMap<LoanBean, BookBean> map = new LinkedHashMap<>();
+        List<LoanInformation> listLoansInfo = new ArrayList<>();
 
         for (int i = 0; i < loans.size(); i++) {
+
+            LoanInformation loanInformation = new LoanInformation();
+
+            loanInformation.setLoanId(loans.get(i).getId());
+
             CopyBean copy= bookClient.selectCopy(loans.get(i).getCopy());
             BookBean book = bookClient.displayBook(copy.getBook());
-            map.put(loans.get(i), book);
+            loanInformation.setBookTitle(book.getTitle());
+
+            loanInformation.setStartDate(loans.get(i).getStartDate());
+            loanInformation.setEndDate(loans.get(i).getEndDate());
+            loanInformation.setRenewed(loans.get(i).isRenewed());
+            loanInformation.setReturned(loans.get(i).isReturned());
+
+            boolean late = false;
+            LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
+            LocalDate endDate = loans.get(i).getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
+            if(!now.isBefore(endDate)){
+                late = true;
+            }
+
+            loanInformation.setLate(late);
+
+            listLoansInfo.add(loanInformation);
         }
 
-        model.addAttribute("loans", loans);
-        model.addAttribute("map", map);
+        model.addAttribute("listLoansInfo", listLoansInfo);
         return "ListLoans";
     }
+
 
     @GetMapping( value="/loan/renew/{id}")
     public String renewLoan(@PathVariable int id){

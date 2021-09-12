@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "zuul-server")
+@FeignClient(name = "zuul-server", url="http://localhost:9004/")
 @RibbonClient(name = "library-book")
 public interface LibraryBookClient {
 
