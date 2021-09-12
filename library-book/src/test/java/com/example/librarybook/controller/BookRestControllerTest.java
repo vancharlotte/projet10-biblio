@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -81,10 +82,24 @@ public class BookRestControllerTest {
     }
 
 
-        //expected throw "book not found"
+    //expected throw "book not found"
     @Test
     public void displayBookExceptionTest() {
         assertThrows(BookNotFoundException.class, () -> bookRestController.displayBook(3));
+    }
+
+    @Test
+    public void getBooksTest() {
+
+        when(bookServiceMock.findSearchPaginated("titre", 2, 10)).thenReturn(new PageImpl<Book>(books));
+        assertEquals(books, bookRestController.getBooks(2, 10, "titre"));
+    }
+
+
+    @Test
+    public void findBooksPaginatedTest() {
+        when(bookServiceMock.findPaginated(2, 10)).thenReturn(new PageImpl<Book>(books));
+        assertEquals(books, bookRestController.findBooksPaginated(2, 10));
     }
 
 }

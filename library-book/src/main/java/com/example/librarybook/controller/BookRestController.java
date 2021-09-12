@@ -56,6 +56,7 @@ public class BookRestController {
                             @RequestParam(value = "word", required = false, defaultValue = "") String word) {
         Page<Book> page = bookService.findSearchPaginated(word, pageNo, pageSize);
         return page.getContent();
+
     }
 
 
