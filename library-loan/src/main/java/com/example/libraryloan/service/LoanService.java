@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class LoanService {
     @Autowired
     private LoanDao loanDao;
 
+    @Transactional
     public Loan saveOrUpdate(Loan loan) {
         return loanDao.save(loan);
     }
@@ -48,6 +50,7 @@ public class LoanService {
         return copyAvailable;
     }
 
+    @Transactional
     public Loan renew(Loan loan) {
         Loan exist = loanDao.findById(loan.getId());
         if (exist == null) throw new LoanNotFoundException("loan not found");
@@ -62,7 +65,7 @@ public class LoanService {
         return loanDao.save(loan);
     }
 
-
+    @Transactional
     public Loan returnLoan(Loan loan) {
         Loan exist = loanDao.findById(loan.getId());
         if (exist == null) throw new LoanNotFoundException("loan not found");

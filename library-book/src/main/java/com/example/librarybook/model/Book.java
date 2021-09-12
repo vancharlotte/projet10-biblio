@@ -78,6 +78,37 @@ public class Book {
                 this.releaseDate = releaseDate;
         }
 
+        public int getId() {
+                return id;
+        }
+
+        public String getTitle() {
+                return title;
+        }
+
+        public String getAuthor() {
+                return author;
+        }
+
+        public String getGenre() {
+                return genre;
+        }
+
+        public String getLanguage() {
+                return language;
+        }
+
+        public String getEditor() {
+                return editor;
+        }
+
+        public String getSummary() {
+                return summary;
+        }
+
+        public String getReleaseDate() {
+                return releaseDate;
+        }
 
         @Override
         public String toString() {

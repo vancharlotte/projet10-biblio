@@ -53,10 +53,13 @@
                         <a th:unless="${loan.returned}"> Non </a>
                     </td>
                     <td>
-                        <a th:if="${loan.renewed}">
+                        <a th:if="${loan.returned}">
+                            <p class="text-secondary"> </p>
+                        </a>
+                        <a th:if="${loan.renewed and !loan.returned}">
                             <p class="text-secondary">emprunt déjà prolongé</p>
                         </a>
-                        <a th:if="${loan.late}">
+                        <a th:if="${loan.late and !loan.returned}">
                         <p class="text-secondary">la durée de votre emprunt est dépassée, veuillez retourner votre livre.</p>
                         </a>
                         <a th:unless="${loan.renewed or loan.returned or loan.late}" th:href="@{/loan/renew/{loanId}(loanId=${loan.loanId})}">
