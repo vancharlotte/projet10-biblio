@@ -115,8 +115,11 @@ public class BookController {
 
 
 
-        if (bookingExist || loanExist || completelist ) {
+        if (bookingExist || loanExist) {
             model.addAttribute("refusedBooking", true);
+        }
+        if (completelist ) {
+            model.addAttribute("completedBooking", true);
         }
 
         bookingClient.listBookingByBookOrderByStartDate(book.getId());

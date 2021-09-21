@@ -47,10 +47,11 @@
                         réservations possibles.
 
                         <hr>
-                        <a th:if="${refusedBooking!=true}" th:href="@{/bookings/add/{bookId}(bookId=${book.id})}">
+                        <a th:if="${refusedBooking!=true and completedBooking!=true}" th:href="@{/bookings/add/{bookId}(bookId=${book.id})}">
                             <button type="button" class="btn btn-primary"> Réserver </button>
                         </a>
                         <a th:if="${refusedBooking==true}"> Ce livre se trouve actuellement dans votre liste de réservations ou d'emprunts en cours.</a>
+                        <a th:if="${completedBooking==true}"> La liste des réservations est actuellement complète.</a>
 
                     </h6>
                     <hr>
