@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(code=HttpStatus.NOT_FOUND, reason = "Copy Not Found")
 public class CopyNotFoundException extends RuntimeException {
 
-    Logger logger = LoggerFactory.getLogger(CopyNotFoundException.class);
+    private Logger logger = LoggerFactory.getLogger(CopyNotFoundException.class);
 
     public CopyNotFoundException(String message) {
         super(message);

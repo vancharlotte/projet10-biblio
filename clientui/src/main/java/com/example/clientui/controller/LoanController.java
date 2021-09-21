@@ -18,6 +18,7 @@ import java.awt.print.Book;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class LoanController {
     private LibraryAccountClient accountClient;
 
 
+    //TODO vérif date
     @GetMapping("/loans")
     public String ListLoans(Model model) {
 
@@ -71,6 +73,8 @@ public class LoanController {
             if(!now.isBefore(endDate)){
                 late = true;
             }
+            logger.info("endDate : " + endDate);
+            logger.info(new Date().toString());
 
             loanInformation.setLate(late);
 

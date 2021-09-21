@@ -5,9 +5,6 @@ public class CopyBean {
     private int id;
     private int book;
 
-    public CopyBean() {
-    }
-
     public int getId() {
         return id;
     }
@@ -26,7 +23,7 @@ public class CopyBean {
 
     @Override
     public String toString() {
-        return "Copy{" +
+        return "CopyBean{" +
                 "id=" + id +
                 ", book=" + book +
                 '}';

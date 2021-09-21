@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +23,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 @Controller
@@ -42,7 +42,7 @@ public class BookingController {
     @Autowired
     private LibraryAccountClient accountClient;
 
-
+    //TODO vérif date
     @GetMapping("/bookings")
     public String ListBookings(Model model) {
 
@@ -70,21 +70,23 @@ public class BookingController {
                 loanByCopy.addAll(loanByCopyByBook);
             }
 
-            //verif car returnDate = null
             Date date1 = null;
             for (LoanBean loanBean : loanByCopy) {
                 Date date2 = loanBean.getEndDate();
                 if (date2.before(date1) || date1 == null) {
                     date1 = date2;
+
                 }
+                logger.info("endDate : " + date2);
+                logger.info("first endDate : " + date1);
 
             }
 
             int rank = 0;
             List<BookingBean> bookingByBook = bookingClient.listBookingByBookOrderByStartDate(book.getId());
-            for (int l = 0; l< bookingByBook.size(); l++){
-                if (bookingByBook.get(l).getUser()==user.getId()){
-                    rank = l+1;
+            for (int l = 0; l < bookingByBook.size(); l++) {
+                if (bookingByBook.get(l).getUser() == user.getId()) {
+                    rank = l + 1;
                 }
             }
 
@@ -94,13 +96,14 @@ public class BookingController {
             bookingInfo.setNbRank(rank);
 
             listBookingsInfo.add(bookingInfo);
-            }
+        }
 
         model.addAttribute("listBookingsInfo", listBookingsInfo);
 
         return "ListBookings";
     }
 
+    //TODO vérif date
     @GetMapping("/bookings/add/{bookId}")
     public String addBooking(@PathVariable String bookId) {
 
@@ -115,28 +118,26 @@ public class BookingController {
         AccountBean user = accountClient.findUsername(username);
         booking.setUser(user.getId());
 
-        logger.info("don't add booking");
-
-      /*  boolean loanExist=false;
-        List<CopyBean> copies = bookClient.listCopies(id);
+        List<CopyBean> copies = bookClient.listCopies(booking.getBook());
+        logger.info(copies.toString());
         for (CopyBean copy : copies) {
-            if (loanClient.existLoanByCopyAndUserAndNotReturned(copy.getId(), user.getId())) {
-                loanExist = true;
+            if (loanClient.existLoanByCopyAndUserAndNotReturned(copy.getId(), user.getId()) ||
+                    bookingClient.existByUserAndBook(user.getId(), booking.getBook())
+            ) {
+                return "redirect:/bookings";
+
             }
+
         }
-
-        boolean bookingExist = bookingClient.findByUserAndBook(user.getId(),id);*/
-
         LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
         LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
         Timestamp timestamp = Timestamp.valueOf(nowMidnight);
-        logger.info(timestamp.toString());
 
         booking.setStartDate(timestamp);
+        logger.info("start Date : " + booking.getStartDate());
+        logger.info(new Date().toString());
 
-       /* if (!loanExist && !bookingExist){
-            logger.info("réservation impossible");
-        bookingClient.addBooking(booking);}*/
+
         bookingClient.addBooking(booking);
 
 

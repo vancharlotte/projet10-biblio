@@ -46,12 +46,13 @@ public class BookingRestController {
 
     @GetMapping(value="/bookings/exist/{user}/{book}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    boolean existByUserAndBook(@PathVariable int user,@PathVariable int book){
+    public boolean existByUserAndBook(@PathVariable int user,@PathVariable int book){
         return bookingService.existByUserAndBook(user,book);
     }
 
 
 
+    //TODO vérif date
     @PostMapping(value = "/addBooking")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public ResponseEntity<Void> addBooking(@Valid @RequestBody Booking booking) {
@@ -64,7 +65,7 @@ public class BookingRestController {
         else {
 
             booking.setStartDate(new Date());
-
+            logger.info(booking.getStartDate().toString());
             bookingService.saveOrUpdate(booking);
 
             URI location = ServletUriComponentsBuilder
@@ -89,29 +90,26 @@ public class BookingRestController {
 
 
  // update booking when send notif client
+    //TODO vérif date
     @PostMapping(value = "/notifBooking")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void notifBooking(@Valid @RequestBody Booking booking) {
     //TODO : verif que ca envoit mail de notif
             booking.setNotifDate(new Date());
+            logger.info(booking.getNotifDate().toString());
             bookingService.saveOrUpdate(booking);
 
     }
 
+    //TODO vérif date
     @PostMapping(value = "/batch/notifNextBooking/{id}")
     public void notifNextBooking(@PathVariable int id){
         Booking booking = bookingService.findById(id);
         booking.setNotifDate(new Date());
+        logger.info(booking.getNotifDate().toString());
         bookingService.saveOrUpdate(booking);
     }
 
-/*
-    @PutMapping(value = "/booking/return")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Booking returnBooking(@Valid @RequestBody Booking booking) {
-        return bookingService.returnBooking(booking);
-    }
-*/
 
     @GetMapping(value ="/bookings/user/{user}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
@@ -127,18 +125,18 @@ public class BookingRestController {
 
 
     @PutMapping(value = "/batch/bookings/delete/expired/{id}")
-    void deleteBookingExpired(@PathVariable int id){
+    public void deleteBookingExpired(@PathVariable int id){
         bookingService.deleteBooking(id);
     }
 
 
-
+    //TODO vérif date
     @GetMapping(value ="/batch/bookings/expired")
 //    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByNotifDateExpired(){
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE,-2);
-
+        logger.info(c.getTime().toString());
         return bookingService.findByNotifDateExpired(c.getTime());
     }
 

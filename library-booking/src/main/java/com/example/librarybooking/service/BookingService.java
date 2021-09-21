@@ -1,16 +1,13 @@
 package com.example.librarybooking.service;
 
 import com.example.librarybooking.dao.BookingDao;
-import com.example.librarybooking.exception.BookingNotFoundException;
 import com.example.librarybooking.model.Booking;
-import javafx.util.converter.LocalDateStringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -47,8 +44,7 @@ public class BookingService {
     }
 
     public List<Booking> findByNotifDateExpired(Date date) {
-        List<Booking> bookings = bookingDao.findByNotifDateExpired(date);
-        return bookings;
+        return bookingDao.findByNotifDateExpired(date);
     }
 
     public List<Booking> findByBookOrderByStartDate(int book) {

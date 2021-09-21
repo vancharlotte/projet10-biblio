@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +70,22 @@ public class BookController {
         BookBean book = bookClient.displayBook(id);
         model.addAttribute("book", book);
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = (String) authentication.getPrincipal();
+        AccountBean user = accountClient.findUsername(username);
+
         List<CopyBean> copies = bookClient.listCopies(book.getId());
+        logger.info(copies.toString());
+
         List<CopyBean> copiesAvailable = new ArrayList<>();
+
+        boolean loanExist=false;
+        for (int i=0; i<copies.size(); i++) {
+            if (loanClient.existLoanByCopyAndUserAndNotReturned(copies.get(i).getId(), user.getId())) {
+                loanExist = true;
+
+            }
+        }
 
         for (int i = 0; i < copies.size(); i++) {
             boolean copyAvailable = loanClient.copyAvailable(copies.get(i).getId());
@@ -95,20 +108,12 @@ public class BookController {
             model.addAttribute("returnDate", null);
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = (String) authentication.getPrincipal();
-        AccountBean user = accountClient.findUsername(username);
+
 
         boolean bookingExist = bookingClient.existByUserAndBook(user.getId(), book.getId());
         boolean completelist = bookings.size() >= (copies.size() * 2);
 
-        boolean loanExist=false;
-        List<CopyBean> listCopies = bookClient.listCopies(id);
-        for (CopyBean copy : listCopies) {
-            if (loanClient.existLoanByCopyAndUserAndNotReturned(copy.getId(), user.getId())) {
-                loanExist = true;
-            }
-        }
+
 
         if (bookingExist || loanExist || completelist ) {
             model.addAttribute("refusedBooking", true);

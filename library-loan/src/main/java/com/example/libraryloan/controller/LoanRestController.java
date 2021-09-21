@@ -10,17 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sun.util.calendar.BaseCalendar;
 
 import javax.validation.Valid;
 import java.net.URI;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +25,7 @@ import java.util.List;
 @RestController
 public class LoanRestController {
 
-    Logger logger = LoggerFactory.getLogger(LoanRestController.class);
+    private Logger logger = LoggerFactory.getLogger(LoanRestController.class);
 
     @Autowired
     LoanService loanService;
@@ -42,6 +38,7 @@ public class LoanRestController {
         return loanService.findById(id);
     }
 
+    //TODO vérif date
     //addLoan (for now, new loan added by employee only)
     @PostMapping(value = "/loan")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -51,15 +48,12 @@ public class LoanRestController {
             return ResponseEntity.noContent().build();}
 
         else {
-         /*   LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-            LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
-            Timestamp timestamp = Timestamp.valueOf(nowMidnight);
-            logger.info(timestamp.toString());*/
-
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             loan.setStartDate(simpleDateFormat.parse(LocalDate.now().toString()));
             loan.setEndDate(simpleDateFormat.parse(LocalDate.now().plusDays(28).toString()));
+            logger.info(loan.getStartDate().toString());
+            logger.info(loan.getEndDate().toString());
             loan.setReturned(false);
             loan.setRenewed(false);
             loanService.saveOrUpdate(loan);
@@ -81,6 +75,8 @@ public class LoanRestController {
     public Loan renewLoan(@Valid @RequestBody Loan loan){
         LocalDate now = LocalDate.now();
         LocalDate endDate = loan.getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
+        logger.info(endDate.toString());
+        logger.info(new Date().toString());
         if(!now.isBefore(endDate)){
             return loan;
         }
