@@ -32,6 +32,7 @@ public class LoanService {
         return loanDao.findByEndDateLessThanAndReturnedFalse(date);
     }
 
+
     public Loan findById(int id) {
         return loanDao.findById(id);
     }
@@ -40,8 +41,8 @@ public class LoanService {
         return loanDao.findByUser(user);
     }
 
-    public List<Loan> findByCopyAndReturnedNotOrderByEndDate(int copy) {
-        return loanDao.findByCopyAndReturnedNotOrderByEndDate(copy, false);
+    public Loan findByCopyAndReturnedNot(int copy) {
+        return loanDao.findByCopyAndReturned(copy, false);
     }
 
     public boolean copyAvailable(int copy) {

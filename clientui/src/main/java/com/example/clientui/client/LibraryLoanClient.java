@@ -24,7 +24,7 @@ public interface LibraryLoanClient {
     List<LoanBean> listLoans(@PathVariable int user);
 
     @GetMapping(value ="/library-loan/loansByCopy/{copy}")
-    List<LoanBean> listLoansByCopyAndReturnedNot(@PathVariable int copy);
+    LoanBean getLoanByCopyAndReturnedNot(@PathVariable int copy);
 
     @GetMapping(value ="/library-loan/loansByCopyAndUserAndReturnedNot/{copy}/{user}")
     boolean existLoanByCopyAndUserAndNotReturned(@PathVariable int copy, @PathVariable int user);

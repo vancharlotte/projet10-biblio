@@ -62,26 +62,6 @@ public class BookingController {
 
             BookBean book = bookClient.displayBook(bookingsByUser.get(i).getBook());
 
-            List<CopyBean> copyByBook = bookClient.listCopies(book.getId());
-            List<LoanBean> loanByCopy = new ArrayList<>();
-
-            for (CopyBean copyBean : copyByBook) {
-                List<LoanBean> loanByCopyByBook = loanClient.listLoansByCopyAndReturnedNot(copyBean.getId());
-                loanByCopy.addAll(loanByCopyByBook);
-            }
-
-            Date date1 = null;
-            for (LoanBean loanBean : loanByCopy) {
-                Date date2 = loanBean.getEndDate();
-                if (date2.before(date1) || date1 == null) {
-                    date1 = date2;
-
-                }
-                logger.info("endDate : " + date2);
-                logger.info("first endDate : " + date1);
-
-            }
-
             int rank = 0;
             List<BookingBean> bookingByBook = bookingClient.listBookingByBookOrderByStartDate(book.getId());
             for (int l = 0; l < bookingByBook.size(); l++) {
@@ -90,12 +70,37 @@ public class BookingController {
                 }
             }
 
+            List<CopyBean> copiesByBook = bookClient.listCopies(book.getId());
+            List<LoanBean> loansByBook = new ArrayList<>();
+
+
+            for (int j = 0; j < copiesByBook.size(); j++) {
+                LoanBean loan = loanClient.getLoanByCopyAndReturnedNot(copiesByBook.get(j).getId());
+                if (loan != null) {
+                    loansByBook.add(loan);
+                }
+            }
+
+            Date returnDate = null;
+            if (!loansByBook.isEmpty()) {
+                logger.info(loansByBook.toString());
+                for (int k = 0; k < loansByBook.size(); k++) {
+                    Date endDate = loansByBook.get(k).getEndDate();
+                    if (returnDate == null || returnDate.after(endDate)) {
+                        returnDate = endDate;
+                    }
+                }
+
+            }
+
+
             bookingInfo.setUser(user.getUsername());
             bookingInfo.setBook(bookClient.displayBook(bookingsByUser.get(i).getBook()).getTitle());
-            bookingInfo.setReturnDate(date1);
+            bookingInfo.setReturnDate(returnDate);
             bookingInfo.setNbRank(rank);
 
             listBookingsInfo.add(bookingInfo);
+
         }
 
         model.addAttribute("listBookingsInfo", listBookingsInfo);

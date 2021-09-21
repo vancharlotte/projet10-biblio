@@ -139,9 +139,9 @@ public class LoanRestControllerTest {
     }
 
     @Test
-    public void listLoansByCopyAndReturnedNot(){
-        Mockito.when(loanServiceMock.findByCopyAndReturnedNotOrderByEndDate(1)).thenReturn(loans);
-        assertEquals(loans,loanRestController.listLoansByCopyAndReturnedNot(1));
+    public void getLoanByCopyAndReturnedNot(){
+        Mockito.when(loanServiceMock.findByCopyAndReturnedNot(1)).thenReturn(loans.get(0));
+        assertEquals(loans.get(0),loanRestController.getLoanByCopyAndReturnedNot(1));
     }
 
     @Test

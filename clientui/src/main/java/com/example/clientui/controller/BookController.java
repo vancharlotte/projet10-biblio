@@ -1,9 +1,6 @@
 package com.example.clientui.controller;
 
-import com.example.clientui.beans.AccountBean;
-import com.example.clientui.beans.BookBean;
-import com.example.clientui.beans.BookingBean;
-import com.example.clientui.beans.CopyBean;
+import com.example.clientui.beans.*;
 import com.example.clientui.client.LibraryAccountClient;
 import com.example.clientui.client.LibraryBookClient;
 import com.example.clientui.client.LibraryBookingClient;
@@ -18,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -75,12 +73,11 @@ public class BookController {
         AccountBean user = accountClient.findUsername(username);
 
         List<CopyBean> copies = bookClient.listCopies(book.getId());
-        logger.info(copies.toString());
 
         List<CopyBean> copiesAvailable = new ArrayList<>();
 
-        boolean loanExist=false;
-        for (int i=0; i<copies.size(); i++) {
+        boolean loanExist = false;
+        for (int i = 0; i < copies.size(); i++) {
             if (loanClient.existLoanByCopyAndUserAndNotReturned(copies.get(i).getId(), user.getId())) {
                 loanExist = true;
 
@@ -102,30 +99,39 @@ public class BookController {
 
         model.addAttribute("nbBooking", bookings.size());
 
-        if (!bookings.isEmpty()) {
-            model.addAttribute("returnDate", bookings.get(0).getStartDate());
-        } else {
-            model.addAttribute("returnDate", null);
-        }
+        Date endDate = null;
+
+        if (copiesAvailable.isEmpty()) {
+            for (int i = 0; i < copies.size(); i++) {
+                LoanBean loan = loanClient.getLoanByCopyAndReturnedNot(copies.get(i).getId());
+                    if (endDate == null || endDate.after(loan.getEndDate())) {
+                        endDate = loan.getEndDate();
+                    }
+                }
+
+            }
+
+        model.addAttribute("returnDate",endDate);
+
+    boolean bookingExist = bookingClient.existByUserAndBook(user.getId(), book.getId());
+    boolean completlist = bookings.size() >= (copies.size() * 2);
 
 
+        if(bookingExist ||loanExist)
 
-        boolean bookingExist = bookingClient.existByUserAndBook(user.getId(), book.getId());
-        boolean completelist = bookings.size() >= (copies.size() * 2);
+    {
+        model.addAttribute("refusedBooking", true);
+    }
+        if(completlist)
 
-
-
-        if (bookingExist || loanExist) {
-            model.addAttribute("refusedBooking", true);
-        }
-        if (completelist ) {
-            model.addAttribute("completedBooking", true);
-        }
+    {
+        model.addAttribute("completedBooking", true);
+    }
 
         bookingClient.listBookingByBookOrderByStartDate(book.getId());
 
 
-        return "Book";
-    }
+        return"Book";
+}
 
 }

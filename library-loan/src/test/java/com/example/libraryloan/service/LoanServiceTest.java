@@ -91,9 +91,9 @@ public class LoanServiceTest {
 
 
     @Test
-    public void findByCopyAndReturnedNotOrderByEndDateTest() {
-        Mockito.when(loanDaoMock.findByCopyAndReturnedNotOrderByEndDate(1,false)).thenReturn(loans);
-        assertEquals(loans, loanService.findByCopyAndReturnedNotOrderByEndDate(1));
+    public void findByCopyAndReturnedNotTest() {
+        Mockito.when(loanDaoMock.findByCopyAndReturned(1,false)).thenReturn(loans.get(0));
+        assertEquals(loans.get(0), loanService.findByCopyAndReturnedNot(1));
 
     }
 

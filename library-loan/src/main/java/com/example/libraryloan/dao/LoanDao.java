@@ -17,7 +17,7 @@ public interface LoanDao extends JpaRepository<Loan, Integer> {
 
     List<Loan> findByUser(int user);
 
-    List<Loan> findByCopyAndReturnedNotOrderByEndDate(int copy, boolean returned);
+    Loan findByCopyAndReturned(int copy, boolean returned);
 
     boolean existsByCopyAndReturned(int copy, boolean returned);
 
