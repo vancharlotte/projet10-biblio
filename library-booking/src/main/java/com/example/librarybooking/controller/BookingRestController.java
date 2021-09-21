@@ -68,6 +68,7 @@ public class BookingRestController {
             logger.info(booking.getStartDate().toString());
             bookingService.saveOrUpdate(booking);
 
+
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")

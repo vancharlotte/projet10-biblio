@@ -118,17 +118,7 @@ public class BookingController {
         AccountBean user = accountClient.findUsername(username);
         booking.setUser(user.getId());
 
-        List<CopyBean> copies = bookClient.listCopies(booking.getBook());
-        logger.info(copies.toString());
-        for (CopyBean copy : copies) {
-            if (loanClient.existLoanByCopyAndUserAndNotReturned(copy.getId(), user.getId()) ||
-                    bookingClient.existByUserAndBook(user.getId(), booking.getBook())
-            ) {
-                return "redirect:/bookings";
 
-            }
-
-        }
         LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
         LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
         Timestamp timestamp = Timestamp.valueOf(nowMidnight);
