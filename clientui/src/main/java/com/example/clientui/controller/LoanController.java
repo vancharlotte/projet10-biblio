@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.awt.print.Book;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class LoanController {
@@ -78,10 +75,17 @@ public class LoanController {
 
             loanInformation.setLate(late);
 
+
+
             listLoansInfo.add(loanInformation);
         }
 
-        model.addAttribute("listLoansInfo", listLoansInfo);
+        ListIterator<LoanInformation> iterator = listLoansInfo.listIterator(listLoansInfo.size());
+        List<LoanInformation> listLoansInfoOpposite = new ArrayList<>();
+        while(iterator.hasPrevious()){
+           listLoansInfoOpposite.add(iterator.previous());
+        }
+        model.addAttribute("listLoansInfo", listLoansInfoOpposite);
         return "ListLoans";
     }
 
