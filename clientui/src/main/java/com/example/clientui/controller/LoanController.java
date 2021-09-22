@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Controller
 public class LoanController {
@@ -71,9 +74,7 @@ public class LoanController {
             }
 
             loanInformation.setLate(late);
-
-
-
+          
             listLoansInfo.add(loanInformation);
         }
 
@@ -85,6 +86,7 @@ public class LoanController {
         model.addAttribute("listLoansInfo", listLoansInfoOpposite);
         return "ListLoans";
     }
+
 
     @GetMapping( value="/loan/renew/{id}")
     public String renewLoan(@PathVariable int id){

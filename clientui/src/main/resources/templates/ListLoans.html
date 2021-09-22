@@ -48,7 +48,7 @@
                     <td th:text="${loan.bookTitle}"></td>
                     <td th:text="${#dates.format(loan.startDate, 'dd-MM-yyyy')}"></td>
                     <td th:text="${#dates.format(loan.endDate, 'dd-MM-yyyy')}"></td>
-                    <td>
+                                        <td>
                         <a th:if="${loan.returned}"> Oui </a>
                         <a th:unless="${loan.returned}"> Non </a>
                     </td>
