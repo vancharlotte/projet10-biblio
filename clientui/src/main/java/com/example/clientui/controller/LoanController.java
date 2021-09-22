@@ -3,6 +3,7 @@ package com.example.clientui.controller;
 import com.example.clientui.beans.*;
 import com.example.clientui.client.LibraryAccountClient;
 import com.example.clientui.client.LibraryBookClient;
+import com.example.clientui.client.LibraryBookingClient;
 import com.example.clientui.client.LibraryLoanClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,13 +30,17 @@ public class LoanController {
     private LibraryLoanClient loanClient;
 
     @Autowired
+    private LibraryBookingClient bookingClient;
+
+    @Autowired
     private LibraryBookClient bookClient;
 
     @Autowired
     private LibraryAccountClient accountClient;
 
+
     @GetMapping("/loans")
-    public String ListLoans(Model model) {
+    public String listLoans(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) authentication.getPrincipal();
@@ -62,16 +68,22 @@ public class LoanController {
             boolean late = false;
             LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
             LocalDate endDate = loans.get(i).getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
+
             if(!now.isBefore(endDate)){
                 late = true;
             }
 
             loanInformation.setLate(late);
-
+          
             listLoansInfo.add(loanInformation);
         }
 
-        model.addAttribute("listLoansInfo", listLoansInfo);
+        ListIterator<LoanInformation> iterator = listLoansInfo.listIterator(listLoansInfo.size());
+        List<LoanInformation> listLoansInfoOpposite = new ArrayList<>();
+        while(iterator.hasPrevious()){
+           listLoansInfoOpposite.add(iterator.previous());
+        }
+        model.addAttribute("listLoansInfo", listLoansInfoOpposite);
         return "ListLoans";
     }
 
@@ -80,9 +92,12 @@ public class LoanController {
     public String renewLoan(@PathVariable int id){
         LoanBean loan =  loanClient.selectLoan(id);
         loanClient.renewLoan(loan);
-        logger.info("put loan");
+        logger.info("renew loan");
         return "redirect:/loans";
 
     }
+
+
+
 
 }

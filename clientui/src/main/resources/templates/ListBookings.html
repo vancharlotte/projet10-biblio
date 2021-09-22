@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Reservations </title>
+    <div th:insert="fragments/header.html">...</div>
+    <style>
+        .container1 {
+            min-height: 500px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container1 bg-light col-12 my-3 rounded">
+
+    <div class="row justify-content-center py-3" style="height: 100px">
+        <h1> Mes réservations </h1>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="align-center col-lg-8 col-12 rounded">
+
+            <table class="table table-striped table-horizontal">
+                <thead>
+                <tr class="bg-info">
+                    <th>Livre</th>
+                    <th>date de retour estimé</th>
+                    <th>classement</th>
+                    <th>Annuler?</th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:if="${listBookingsInfo==null}">
+                    <td>aucun résultat</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+
+                </tr>
+                <tr  th:each="booking  : ${listBookingsInfo}">
+                        <td th:text="${booking.book}"></td>
+                        <td>
+                            <span th:if="${booking.returnDate!=null}" th:text="${#dates.format(booking.returnDate, 'dd-MM-yyyy')}"></span>
+                        </td>
+                        <td>
+                            Vous êtes actuellement : <a th:text="${booking.nbRank}">
+                            </a> sur la liste d'attente.</td>
+                        <td>
+                            <a th:href="@{/bookings/delete/{bookingId}(bookingId=${booking.booking})}">
+                                <button type="button" class="btn btn-primary"> Annuler </button>
+                            </a>
+                        </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+<footer>
+    <div th:insert="fragments/footer.html">...</div>
+</footer>
+</html>

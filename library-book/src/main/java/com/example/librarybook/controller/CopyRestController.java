@@ -24,7 +24,9 @@ public class CopyRestController {
     @GetMapping(value = "/copies/{book}")
     @PreAuthorize("isAuthenticated()")
     public List<Copy> listCopies(@PathVariable int book) {
-        return copyService.findByBook(book);
+        List<Copy> copies = copyService.findByBook(book);
+        logger.info(copies.toString());
+        return copies;
     }
 
     // select one copy

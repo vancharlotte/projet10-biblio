@@ -13,7 +13,7 @@
     <groupId>org.example</groupId>
     <artifactId>library</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1.RELEASE</version>
+    <version>1.1.1.RELEASE</version>
 
 
     <modules>
@@ -22,8 +22,10 @@
         <module>auth-server</module>
         <module>library-book</module>
         <module>library-loan</module>
+        <module>library-booking</module>
         <module>zuul-server</module>
         <module>library-batch</module>
+        <module>library-batch-notif</module>
         <module>clientui</module>
     </modules>
 

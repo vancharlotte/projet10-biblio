@@ -33,8 +33,7 @@ public class BookRestController {
     @GetMapping("/books/search")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Book> searchBooks(@RequestParam(value = "word", required = false, defaultValue = "") String word) {
-        List<Book> listBooks = bookService.findByString(word);
-        return listBooks;
+        return bookService.findByString(word);
     }
 
 
@@ -51,11 +50,12 @@ public class BookRestController {
 
     @GetMapping(value = "/books/search/page/{pageNo}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
-    List<Book> getBooks(@PathVariable(value = "pageNo") int pageNo,
+    public List<Book> getBooks(@PathVariable(value = "pageNo") int pageNo,
                             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
                             @RequestParam(value = "word", required = false, defaultValue = "") String word) {
         Page<Book> page = bookService.findSearchPaginated(word, pageNo, pageSize);
         return page.getContent();
+
     }
 
 

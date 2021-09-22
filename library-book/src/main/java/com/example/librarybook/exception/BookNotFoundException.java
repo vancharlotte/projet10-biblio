@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "book not found")
 public class BookNotFoundException extends RuntimeException {
 
-    Logger logger = LoggerFactory.getLogger(BookNotFoundException.class);
+    private Logger logger = LoggerFactory.getLogger(BookNotFoundException.class);
 
 
     public BookNotFoundException(String message) {

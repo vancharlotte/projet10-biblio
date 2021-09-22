@@ -1,7 +1,10 @@
 package com.example.librarybatch.writer;
 
+import com.example.librarybatch.config.BatchConfig;
 import com.example.librarybatch.model.LoanBean;
 import com.example.librarybatch.service.EmailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +14,9 @@ import java.util.List;
 @Component
 public class LoanExpiredItemWriter implements ItemWriter<LoanBean> {
 
+    private Logger logger = LoggerFactory.getLogger(LoanExpiredItemWriter.class);
+
+
     @Autowired
     EmailService emailService;
 
@@ -18,7 +24,7 @@ public class LoanExpiredItemWriter implements ItemWriter<LoanBean> {
     public void write(List<? extends LoanBean> loans) throws Exception {
 
             for (LoanBean loanExpired : loans) {
-                System.out.println("item writer : " + loanExpired.getUserEmail());
+                logger.info("item writer : " + loanExpired.getUserEmail());
                 emailService.sendSimpleMessage(loanExpired.getUserEmail(), emailTemplate());
             }
 

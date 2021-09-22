@@ -1,0 +1,60 @@
+version: '2'
+services:
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  dbauth:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "127.0.0.1:6033:3306"
+    volumes:
+      - ./init/dbauth:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dbauth
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123!
+
+  dbbook:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "127.0.0.1:6034:3306"
+    volumes:
+      - ./init/dbbook:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dbbook
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123!
+
+  dbloan:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "127.0.0.1:6035:3306"
+    volumes:
+      - ./init/dbloan:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dbloan
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123!
+
+  dbbooking:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "127.0.0.1:6036:3306"
+    volumes:
+      - ./init/dbbooking:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dbbooking
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123!
+

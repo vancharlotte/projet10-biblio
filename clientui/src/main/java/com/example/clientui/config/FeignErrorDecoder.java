@@ -28,7 +28,6 @@ public class FeignErrorDecoder implements ErrorDecoder {
             message = response.reason();
         }
 
-        logger.error("Status code : " + response.status() + ", methodKey = " + methodKey + ", message = " + message);
         return new ResponseStatusException(HttpStatus.valueOf(response.status()), message);
     }
 }

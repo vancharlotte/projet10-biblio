@@ -11,7 +11,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>eureka-server</artifactId>
-    <version>1.0.1-RELEASE</version>
+	  <version>1.1.1.RELEASE</version>
     <name>eureka-server</name>
     <description>eureka-server</description>
 
