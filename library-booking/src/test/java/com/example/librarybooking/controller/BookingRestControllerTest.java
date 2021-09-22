@@ -168,14 +168,12 @@ public class BookingRestControllerTest {
     }
 
 
-/*    @Test
+   @Test
     public void listBookingByNotifDateExpiredTest(){
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE,-2);
-        Mockito.when(bookingServiceMock.findByNotifDateExpired(c.getTime())).thenReturn(bookings);
+          Mockito.when(bookingServiceMock.findByNotifDateExpired()).thenReturn(bookings);
         assertEquals(bookings, bookingRestController.listBookingByNotifDateExpired());
 
-    }*/
+    }
 
     @Test
     public void listBookingByBookOrderByStartDateTest(){

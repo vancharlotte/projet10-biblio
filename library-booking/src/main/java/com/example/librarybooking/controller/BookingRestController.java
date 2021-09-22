@@ -135,10 +135,7 @@ public class BookingRestController {
     @GetMapping(value ="/batch/bookings/expired")
 //    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByNotifDateExpired(){
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE,-2);
-        logger.info(c.getTime().toString());
-        return bookingService.findByNotifDateExpired(c.getTime());
+        return bookingService.findByNotifDateExpired();
     }
 
     @GetMapping(value = {"/batch/bookings/book/{book}", "/bookings/book/{book}"})

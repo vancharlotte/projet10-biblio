@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,8 +44,11 @@ public class BookingService {
         return bookingDao.findByNotifDate(date);
     }
 
-    public List<Booking> findByNotifDateExpired(Date date) {
-        return bookingDao.findByNotifDateExpired(date);
+    public List<Booking> findByNotifDateExpired() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE,-2);
+        logger.info("c :" + c.getTime());
+        return bookingDao.findByNotifDateExpired(c.getTime());
     }
 
     public List<Booking> findByBookOrderByStartDate(int book) {

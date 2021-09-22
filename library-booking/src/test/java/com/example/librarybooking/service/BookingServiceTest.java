@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class BookingServiceTest {
 
     @Mock
     private BookingDao bookingDaoMock;
+
 
     private static List<Booking> bookings = new ArrayList<>();
 
@@ -90,16 +92,6 @@ public class BookingServiceTest {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date2 = simpleDateFormat.parse(LocalDate.now().plusDays(2).toString());
         assertNotEquals(bookings, bookingService.findByNotifDate(date2));
-    }
-
-    @Test
-    public void findByNotifDateExpiredTest() throws ParseException {
-        Date date1 = new Date();
-        Mockito.when(bookingDaoMock.findByNotifDateExpired(date1)).thenReturn(bookings);
-        assertEquals(bookings, bookingService.findByNotifDateExpired(date1));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date2 = simpleDateFormat.parse(LocalDate.now().plusDays(2).toString());
-        assertNotEquals(bookings, bookingService.findByNotifDateExpired(date2));
     }
 
     @Test
