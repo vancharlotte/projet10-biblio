@@ -51,7 +51,6 @@ public class LoanService {
         return copyAvailable;
     }
 
-    //TODO vérif date
     @Transactional
     public Loan renew(Loan loan) {
         Loan exist = loanDao.findById(loan.getId());
@@ -63,7 +62,6 @@ public class LoanService {
             calendar.add(Calendar.DAY_OF_YEAR, 28);
             loan.setEndDate(calendar.getTime());
         }
-        logger.info(loan.getEndDate().toString());
 
         return loanDao.save(loan);
     }

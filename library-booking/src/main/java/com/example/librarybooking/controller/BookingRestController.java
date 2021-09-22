@@ -49,7 +49,6 @@ public class BookingRestController {
 
 
 
-    //TODO vérif date
     @PostMapping(value = "/addBooking")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public ResponseEntity<Void> addBooking(@Valid @RequestBody Booking booking) {
@@ -87,17 +86,14 @@ public class BookingRestController {
 
 
  // update booking when send notif client
-    //TODO vérif date
     @PostMapping(value = "/notifBooking")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void notifBooking(@Valid @RequestBody Booking booking) {
-    //TODO : verif que ca envoit mail de notif
             booking.setNotifDate(new Date());
             bookingService.saveOrUpdate(booking);
 
     }
 
-    //TODO vérif date
     @PostMapping(value = "/batch/notifNextBooking/{id}")
     public void notifNextBooking(@PathVariable int id){
         Booking booking = bookingService.findById(id);
@@ -125,7 +121,6 @@ public class BookingRestController {
     }
 
 
-    //TODO vérif date
     @GetMapping(value ="/batch/bookings/expired")
 //    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Booking> listBookingByNotifDateExpired(){

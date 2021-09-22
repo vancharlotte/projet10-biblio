@@ -38,7 +38,6 @@ public class LoanRestController {
         return loanService.findById(id);
     }
 
-    //TODO vérif date
     //addLoan (for now, new loan added by employee only)
     @PostMapping(value = "/loan")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -52,8 +51,6 @@ public class LoanRestController {
 
             loan.setStartDate(simpleDateFormat.parse(LocalDate.now().toString()));
             loan.setEndDate(simpleDateFormat.parse(LocalDate.now().plusDays(28).toString()));
-            logger.info(loan.getStartDate().toString());
-            logger.info(loan.getEndDate().toString());
             loan.setReturned(false);
             loan.setRenewed(false);
             loanService.saveOrUpdate(loan);
@@ -69,14 +66,11 @@ public class LoanRestController {
     }
 
 
-    //TODO vérif date
     @PutMapping(value = "/loan/renew")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public Loan renewLoan(@Valid @RequestBody Loan loan){
         LocalDate now = LocalDate.now();
         LocalDate endDate = loan.getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
-        logger.info(endDate.toString());
-        logger.info(new Date().toString());
         if(!now.isBefore(endDate)){
             return loan;
         }

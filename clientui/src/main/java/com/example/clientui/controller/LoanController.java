@@ -36,7 +36,6 @@ public class LoanController {
     private LibraryAccountClient accountClient;
 
 
-    //TODO vérif date
     @GetMapping("/loans")
     public String listLoans(Model model) {
 
@@ -66,6 +65,7 @@ public class LoanController {
             boolean late = false;
             LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
             LocalDate endDate = loans.get(i).getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
+
             if(!now.isBefore(endDate)){
                 late = true;
             }

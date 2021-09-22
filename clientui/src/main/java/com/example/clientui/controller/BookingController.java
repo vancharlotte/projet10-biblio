@@ -42,7 +42,6 @@ public class BookingController {
     @Autowired
     private LibraryAccountClient accountClient;
 
-    //TODO vérif date
     @GetMapping("/bookings")
     public String ListBookings(Model model) {
 
@@ -83,7 +82,6 @@ public class BookingController {
 
             Date returnDate = null;
             if (!loansByBook.isEmpty()) {
-                logger.info(loansByBook.toString());
                 for (int k = 0; k < loansByBook.size(); k++) {
                     Date endDate = loansByBook.get(k).getEndDate();
                     if (returnDate == null || returnDate.after(endDate)) {
@@ -108,7 +106,6 @@ public class BookingController {
         return "ListBookings";
     }
 
-    //TODO vérif date
     @GetMapping("/bookings/add/{bookId}")
     public String addBooking(@PathVariable String bookId) {
 
@@ -129,8 +126,6 @@ public class BookingController {
         Timestamp timestamp = Timestamp.valueOf(nowMidnight);
 
         booking.setStartDate(timestamp);
-        logger.info("start Date : " + booking.getStartDate());
-        logger.info(new Date().toString());
 
 
         bookingClient.addBooking(booking);
