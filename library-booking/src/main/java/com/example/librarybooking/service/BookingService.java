@@ -47,7 +47,6 @@ public class BookingService {
     public List<Booking> findByNotifDateExpired() {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE,-2);
-        logger.info("c :" + c.getTime());
         return bookingDao.findByNotifDateExpired(c.getTime());
     }
 

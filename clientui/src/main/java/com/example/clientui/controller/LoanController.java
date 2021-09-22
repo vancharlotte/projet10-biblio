@@ -14,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -39,7 +38,7 @@ public class LoanController {
 
     //TODO vérif date
     @GetMapping("/loans")
-    public String ListLoans(Model model) {
+    public String listLoans(Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = (String) authentication.getPrincipal();
@@ -70,8 +69,6 @@ public class LoanController {
             if(!now.isBefore(endDate)){
                 late = true;
             }
-            logger.info("endDate : " + endDate);
-            logger.info(new Date().toString());
 
             loanInformation.setLate(late);
 

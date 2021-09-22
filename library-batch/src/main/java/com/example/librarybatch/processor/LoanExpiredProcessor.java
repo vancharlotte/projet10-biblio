@@ -2,6 +2,9 @@ package com.example.librarybatch.processor;
 
 import com.example.librarybatch.model.LoanBean;
 import com.example.librarybatch.proxy.UserProxy;
+import com.example.librarybatch.writer.LoanExpiredItemWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LoanExpiredProcessor implements ItemProcessor<LoanBean, LoanBean> {
+
+    private Logger logger = LoggerFactory.getLogger(LoanExpiredProcessor.class);
 
     @Autowired
     UserProxy userProxy;
@@ -20,11 +25,11 @@ public class LoanExpiredProcessor implements ItemProcessor<LoanBean, LoanBean> {
     @Cacheable("loan")
     public LoanBean process(LoanBean loanBean) throws Exception {
 
-        System.out.println("item processor");
+        logger.info("item processor");
         String email = (userProxy.selectAccount(loanBean.getUser())).getEmail();
 
         loanBean.setUserEmail(email);
-        System.out.println(loanBean.getUserEmail());
+        logger.info(loanBean.getUserEmail());
         return loanBean;
     }
 

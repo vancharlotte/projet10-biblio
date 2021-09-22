@@ -1,9 +1,9 @@
 package com.example.librarybatchnotif.config;
 
-import com.example.librarybatchnotif.model.BookBean;
-import com.example.librarybatchnotif.model.LoanBean;
 import com.example.librarybatchnotif.model.BookingBean;
 import com.example.librarybatchnotif.proxy.BookingProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -20,9 +20,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -30,6 +28,8 @@ import java.util.Map;
 @EnableScheduling
 
 public class BatchConfig {
+
+    private Logger logger = LoggerFactory.getLogger(BatchConfig.class);
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -54,7 +54,7 @@ public class BatchConfig {
    @CacheEvict(value = {"booking"}, allEntries = true)
     public Job mailJob() throws IOException {
 
-       System.out.println("mail job");
+       logger.info("mail job");
         Step step1 = stepBuilderFactory.get("step-send-email")
                 .<BookingBean, BookingBean>chunk(100)
                 .reader(bookingExpiredItemReader())
@@ -70,7 +70,7 @@ public class BatchConfig {
     //liste de booking avec notif date expired
     @Bean
     public ListItemReader<BookingBean> bookingExpiredItemReader() throws IOException {
-        System.out.println("item reader");
+        logger.info("item reader");
         return new ListItemReader<>(bookingProxy.listBookingByNotifDateExpired());
     }
 

@@ -29,7 +29,6 @@ public class TestFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         String header = request.getHeader("Authorization");
-        System.out.println("header : Authorization " + header);
     return null;
     }
 }

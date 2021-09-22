@@ -18,7 +18,7 @@ import java.util.List;
 
 public class LoanAdminController {
 
-    private Logger logger = LoggerFactory.getLogger(LoanController.class);
+    private Logger logger = LoggerFactory.getLogger(LoanAdminController.class);
 
     @Autowired
     private LibraryLoanClient loanClient;

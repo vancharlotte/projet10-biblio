@@ -2,6 +2,8 @@ package com.example.librarybatch.config;
 
 import com.example.librarybatch.model.LoanBean;
 import com.example.librarybatch.proxy.LoanProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -25,6 +27,8 @@ import java.util.Map;
 @EnableBatchProcessing
 @EnableScheduling
 public class BatchConfig {
+
+    private Logger logger = LoggerFactory.getLogger(BatchConfig.class);
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -50,7 +54,7 @@ public class BatchConfig {
     public Job mailJob() throws IOException {
 
 
-        System.out.println("mail job");
+        logger.info("mail job");
         Step step1 = stepBuilderFactory.get("step-send-email")
                 .<LoanBean, LoanBean>chunk(100)
                 .reader(loanExpiredItemReader())
@@ -64,7 +68,7 @@ public class BatchConfig {
 
     @Bean
     public ListItemReader<LoanBean> loanExpiredItemReader() throws IOException {
-        System.out.println("item reader");
+        logger.info("item reader");
         return new ListItemReader<>(loanProxy.listLoanNotReturnedOnTime());
     }
 

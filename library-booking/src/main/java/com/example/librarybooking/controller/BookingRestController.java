@@ -14,9 +14,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 
 import java.net.URI;
-import java.sql.Timestamp;
-import java.time.*;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +62,6 @@ public class BookingRestController {
         else {
 
             booking.setStartDate(new Date());
-            logger.info(booking.getStartDate().toString());
             bookingService.saveOrUpdate(booking);
 
 
@@ -97,7 +93,6 @@ public class BookingRestController {
     public void notifBooking(@Valid @RequestBody Booking booking) {
     //TODO : verif que ca envoit mail de notif
             booking.setNotifDate(new Date());
-            logger.info(booking.getNotifDate().toString());
             bookingService.saveOrUpdate(booking);
 
     }
@@ -107,7 +102,6 @@ public class BookingRestController {
     public void notifNextBooking(@PathVariable int id){
         Booking booking = bookingService.findById(id);
         booking.setNotifDate(new Date());
-        logger.info(booking.getNotifDate().toString());
         bookingService.saveOrUpdate(booking);
     }
 

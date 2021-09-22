@@ -33,8 +33,7 @@ public class BookRestController {
     @GetMapping("/books/search")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public List<Book> searchBooks(@RequestParam(value = "word", required = false, defaultValue = "") String word) {
-        List<Book> listBooks = bookService.findByString(word);
-        return listBooks;
+        return bookService.findByString(word);
     }
 
 

@@ -4,6 +4,8 @@ import com.example.librarybatchnotif.model.BookBean;
 import com.example.librarybatchnotif.proxy.BookingProxy;
 import com.example.librarybatchnotif.proxy.UserProxy;
 import com.example.librarybatchnotif.model.BookingBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,6 +15,9 @@ import java.util.List;
 
 @Component
 public class BookingExpiredProcessor implements ItemProcessor<BookingBean, BookingBean> {
+
+    private Logger logger = LoggerFactory.getLogger(BookingExpiredProcessor.class);
+
 
     @Autowired
     UserProxy userProxy;
@@ -28,7 +33,7 @@ public class BookingExpiredProcessor implements ItemProcessor<BookingBean, Booki
         //récupérer l'id du livre qui est concerné par la réservation au délai dépassé
         BookBean book = new BookBean();
         book.setId(bookingBean.getBook());
-        System.out.println("book : " + book.getId());
+        logger.info("book : " + book.getId());
 
         //supprimer la réservation au délai dépassé
         bookingProxy.deleteBookingExpired(bookingBean.getId());
@@ -39,12 +44,12 @@ public class BookingExpiredProcessor implements ItemProcessor<BookingBean, Booki
 
         if (!bookings.isEmpty()){
             nextBooking = bookings.get(0);
-            System.out.println("nextBooking :" + nextBooking);
+            logger.info("nextBooking :" + nextBooking);
 
             //récupérer le mail de la personne qui a fait cette réservation
             String email = (userProxy.selectAccount(nextBooking.getUser())).getEmail();
             nextBooking.setUserEmail(email);
-            System.out.println("email : " + email);
+            logger.info("email : " + email);
 
         }
 
