@@ -52,7 +52,6 @@ public class BookingRestController {
     @PostMapping(value = "/addBooking")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public ResponseEntity<Void> addBooking(@Valid @RequestBody Booking booking) {
-        logger.info("add booking to bdd");
 
 
         if ((booking == null)||(bookingService.existByUserAndBook(booking.getUser(), booking.getBook()))){
@@ -94,7 +93,7 @@ public class BookingRestController {
 
     }
 
-    @PostMapping(value = "/batch/notifNextBooking/{id}")
+    @PostMapping(value = "/notifNextBooking/{id},/batch/notifNextBooking/{id}")
     public void notifNextBooking(@PathVariable int id){
         Booking booking = bookingService.findById(id);
         booking.setNotifDate(new Date());

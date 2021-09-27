@@ -112,6 +112,9 @@ public class BookingController {
         BookingBean booking = new BookingBean();
 
         int id = Integer.parseInt(bookId);
+
+        if(bookingClient.listBookingByBookOrderByStartDate(id).size() <(bookClient.listCopies(id).size()*2)){
+
         booking.setBook(id);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -119,17 +122,15 @@ public class BookingController {
 
         AccountBean user = accountClient.findUsername(username);
         booking.setUser(user.getId());
-
-
-        LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-        LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
-        Timestamp timestamp = Timestamp.valueOf(nowMidnight);
-
-        booking.setStartDate(timestamp);
-
+        booking.setStartDate(new Date());
 
         bookingClient.addBooking(booking);
 
+        }
+
+        else{
+            logger.info("annulation réservations : liste d'attente déjà complète");
+        }
 
         return "redirect:/bookings";
 
