@@ -70,9 +70,9 @@ public class LoanRestController {
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public Loan renewLoan(@Valid @RequestBody Loan loan){
 
-        LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-        LocalDate endDate = loan.getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
-        if(!now.isBefore(endDate)){
+        Date now = new Date();
+        Date endDate = loan.getEndDate();
+        if(now.after(endDate)){
             return loan;
         }
         else{

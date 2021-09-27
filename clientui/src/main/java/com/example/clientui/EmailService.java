@@ -21,7 +21,7 @@ public class EmailService {
 
     public String emailTemplate() {
         return "Bonjour," +
-                "\n\nLe livre que vous avez réservé des disponibles." +
+                "\n\nLe livre que vous avez réservé est disponible." +
                 "\nVous disposez de 48h pour l'emprunter," +
                 "\naprès ce délai, votre réservation sera annulé et vous devrez faire une nouvelle demande." +
                 "\n\n\nCordialement," +

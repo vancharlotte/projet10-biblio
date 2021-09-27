@@ -45,6 +45,7 @@ public class LoanAdminController {
 
         List<BookingBean> bookings = bookingClient.listBookingByBookOrderByStartDate(bookId);
         AccountBean user = accountClient.selectAccount(bookings.get(0).getUser());
+        bookingClient.notifBooking(bookings.get(0));
 
         emailService.sendSimpleMessage(user.getEmail(), emailService.emailTemplate());
 

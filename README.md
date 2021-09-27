@@ -81,6 +81,6 @@ Les ports ont été pré-défini pour chaque microservice :
 les données de démo ont été mis à jour dans la base de données.
 Dans le terminal, lancez la commande :
 - cd livrables
-- docker-compose down
+- docker-compose stop
 - docker-compose rm -v
 - docker-compose up
