@@ -14,18 +14,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
-import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
 @RestController
 public class LoanRestController {
 
-    Logger logger = LoggerFactory.getLogger(LoanRestController.class);
+    private Logger logger = LoggerFactory.getLogger(LoanRestController.class);
 
     @Autowired
     LoanService loanService;
@@ -41,22 +41,20 @@ public class LoanRestController {
     //addLoan (for now, new loan added by employee only)
     @PostMapping(value = "/loan")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> addLoan(@Valid @RequestBody Loan loan) {
+    public ResponseEntity<Void> addLoan(@Valid @RequestBody Loan loan) throws ParseException {
 
         if (loan == null){
             return ResponseEntity.noContent().build();}
 
         else {
-            LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-            LocalDateTime nowMidnight = LocalDateTime.of(now, LocalTime.MIDNIGHT);
-            Timestamp timestamp = Timestamp.valueOf(nowMidnight);
-            logger.info(timestamp.toString());
-
-            loan.setStartDate(timestamp);
-            loan.setEndDate(Timestamp.valueOf(nowMidnight.plusDays(28)));
+            loan.setStartDate(new Date());
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_YEAR, 28);
+            loan.setEndDate(calendar.getTime());
             loan.setReturned(false);
             loan.setRenewed(false);
             loanService.saveOrUpdate(loan);
+
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
@@ -68,13 +66,13 @@ public class LoanRestController {
     }
 
 
-    //renewLoan
     @PutMapping(value = "/loan/renew")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
     public Loan renewLoan(@Valid @RequestBody Loan loan){
-        LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-        LocalDate endDate = loan.getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
-        if(!now.isBefore(endDate)){
+
+        Date now = new Date();
+        Date endDate = loan.getEndDate();
+        if(now.after(endDate)){
             return loan;
         }
         else{
@@ -84,10 +82,10 @@ public class LoanRestController {
 
 
     //returnLoan (for now, loan returned by employee only)
-    @PutMapping(value = "/loan/return")
+    @PutMapping(value = "/loan/return/{loanId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Loan returnLoan(@Valid @RequestBody Loan loan) {
-        return loanService.returnLoan(loan);
+    public Loan returnLoan(@PathVariable int loanId) {
+        return loanService.returnLoan(loanService.findById(loanId));
     }
 
 
@@ -95,12 +93,7 @@ public class LoanRestController {
     @GetMapping(value ="/batch/loanNotReturnedOnTime")
     @PreAuthorize("isAuthenticated()")
     public List<Loan> listLoanNotReturnedOnTime(){
-        LocalDate today = LocalDate.now(ZoneId.of("Europe/Paris"));
-        LocalDateTime todayMidnight = LocalDateTime.of(today, LocalTime.MIDNIGHT);
-        Timestamp timestamp = Timestamp.valueOf(todayMidnight);
-        logger.info(timestamp.toString());
-
-        return loanService.findByEndDateLessThanAndReturnedFalse(timestamp);
+        return loanService.findByEndDateLessThanAndReturnedFalse();
     }
 
     @GetMapping(value ="/loans/{user}")
@@ -108,6 +101,20 @@ public class LoanRestController {
     public List<Loan> listLoans(@PathVariable int user){
         return loanService.findByUser(user);
     }
+
+    @GetMapping(value ="/loansByCopy/{copy}")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    public Loan getLoanByCopyAndReturnedNot(@PathVariable int copy){
+        return loanService.findByCopyAndReturnedNot(copy);
+    }
+
+    @GetMapping(value ="/loansByCopyAndUserAndReturnedNot/{copy}/{user}")
+    @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")
+    public boolean existLoanByCopyAndUserAndNotReturned(@PathVariable int copy, @PathVariable int user){
+        // return true if loan already exist
+        return loanService.existByCopyAndUserAndReturnedNot(copy, user);
+    }
+
 
     @GetMapping(value = "/loans/copyAvailable/{copy}")
     @PreAuthorize("hasAuthority('ADMIN')" + "|| hasAuthority('USER')")

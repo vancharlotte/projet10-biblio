@@ -2,6 +2,8 @@ package com.example.librarybatch.config;
 
 import com.example.librarybatch.model.LoanBean;
 import com.example.librarybatch.proxy.LoanProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -11,18 +13,12 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 
-import javax.mail.Session;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +26,9 @@ import java.util.Map;
 @Configuration
 @EnableBatchProcessing
 @EnableScheduling
-
 public class BatchConfig {
+
+    private Logger logger = LoggerFactory.getLogger(BatchConfig.class);
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -57,7 +54,7 @@ public class BatchConfig {
     public Job mailJob() throws IOException {
 
 
-        System.out.println("mail job");
+        logger.info("mail job");
         Step step1 = stepBuilderFactory.get("step-send-email")
                 .<LoanBean, LoanBean>chunk(100)
                 .reader(loanExpiredItemReader())
@@ -71,7 +68,7 @@ public class BatchConfig {
 
     @Bean
     public ListItemReader<LoanBean> loanExpiredItemReader() throws IOException {
-        System.out.println("item reader");
+        logger.info("item reader");
         return new ListItemReader<>(loanProxy.listLoanNotReturnedOnTime());
     }
 

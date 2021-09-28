@@ -56,4 +56,6 @@ public class AuthUserDetail extends Account implements UserDetails {
     public boolean isEnabled() {
         return super.isEnabled();
     }
+
+
 }

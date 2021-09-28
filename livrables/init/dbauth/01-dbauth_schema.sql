@@ -1,4 +1,10 @@
-SET sql_mode = '';
+CREATE DATABASE IF NOT EXISTS dbauth;
+
+CREATE USER 'admin'@'dbauth' IDENTIFIED BY 'admin123!';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'dbauth';
+FLUSH PRIVILEGES ;
+
+USE dbauth;
 
 create table if not exists oauth_client_details (
   client_id varchar(255) not null,
@@ -70,3 +76,4 @@ create table if not exists oauth_approvals (
 	expiresAt TIMESTAMP,
 	lastModifiedAt TIMESTAMP
 );
+

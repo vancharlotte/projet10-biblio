@@ -1,4 +1,12 @@
-SET sql_mode = '';
+CREATE DATABASE IF NOT EXISTS dbbook;
+
+CREATE USER 'admin'@'dbbook' IDENTIFIED BY 'admin123!';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'dbbook';
+FLUSH PRIVILEGES ;
+
+USE dbbook;
+Alter DATABASE dbbook CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 
 create table if not exists book
 (
@@ -12,6 +20,8 @@ create table if not exists book
     summary      varchar(255) null,
     title        varchar(255) null
 );
+
+alter table book CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 create table if not exists copy
 (

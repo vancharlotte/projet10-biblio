@@ -1,6 +1,5 @@
 package com.example.libraryloan.config;
 
-import com.google.inject.internal.asm.$Handle;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
