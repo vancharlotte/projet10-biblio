@@ -127,7 +127,7 @@ public class LoanRestControllerTest {
 
     @Test
     public void listLoanNotReturnedOnTime()  {
-        Mockito.when(loanServiceMock.findByEndDateLessThanAndReturnedFalse(new Date())).thenReturn(loans);
+        Mockito.when(loanServiceMock.findByEndDateLessThanAndReturnedFalse()).thenReturn(loans);
         assertEquals(loans,loanRestController.listLoanNotReturnedOnTime());
     }
 

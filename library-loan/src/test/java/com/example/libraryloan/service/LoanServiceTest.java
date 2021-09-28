@@ -71,9 +71,9 @@ public class LoanServiceTest {
 
    @Test
     public void findByEndDateLessThanAndReturnedFalseTest() {
-        Date date = new Date();
-        Mockito.when(loanDaoMock.findByEndDateLessThanAndReturnedFalse(date)).thenReturn(loans);
-        assertEquals(loans, loanService.findByEndDateLessThanAndReturnedFalse(date));
+       // Date date = new Date();
+        Mockito.when(loanDaoMock.findByEndDateLessThanAndReturnedFalse(new Date())).thenReturn(loans);
+        assertEquals(loans, loanService.findByEndDateLessThanAndReturnedFalse());
     }
 
     @Test

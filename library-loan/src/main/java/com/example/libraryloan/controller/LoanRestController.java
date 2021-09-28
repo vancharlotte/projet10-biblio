@@ -17,7 +17,6 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -93,7 +92,7 @@ public class LoanRestController {
     @GetMapping(value ="/batch/loanNotReturnedOnTime")
     @PreAuthorize("isAuthenticated()")
     public List<Loan> listLoanNotReturnedOnTime(){
-        return loanService.findByEndDateLessThanAndReturnedFalse(new Date());
+        return loanService.findByEndDateLessThanAndReturnedFalse();
     }
 
     @GetMapping(value ="/loans/{user}")

@@ -28,8 +28,8 @@ public class LoanService {
         return loanDao.save(loan);
     }
 
-    public List<Loan> findByEndDateLessThanAndReturnedFalse(Date date) {
-        return loanDao.findByEndDateLessThanAndReturnedFalse(date);
+    public List<Loan> findByEndDateLessThanAndReturnedFalse() {
+        return loanDao.findByEndDateLessThanAndReturnedFalse(new Date());
     }
 
 
