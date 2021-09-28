@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>library-booking</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1.RELEASE</version>
     <name>library booking</name>
     <description>microservice booking</description>
     <properties>
