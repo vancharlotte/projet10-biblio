@@ -32,10 +32,10 @@ public interface LibraryLoanClient {
     @GetMapping(value = "/library-loan/loans/copyAvailable/{copy}")
     boolean copyAvailable(@PathVariable int copy);
 
-    @PutMapping(value = "/loan/return/{loan}")
-    LoanBean returnLoan(@PathVariable int loan);
+    @PutMapping(value = "/library-loan/loan/return/{loanId}")
+    LoanBean returnLoan(@PathVariable int loanId);
 
-    @PostMapping(value = "/loan")
+    @PostMapping(value = "/library-loan/loan")
     ResponseEntity<Void> addLoan(@Valid @RequestBody LoanBean loan);
 
 

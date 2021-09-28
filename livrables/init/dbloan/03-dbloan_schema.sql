@@ -6,11 +6,6 @@ FLUSH PRIVILEGES ;
 
 USE dbloan;
 
-create table if not exists hibernate_sequence
-(
-    next_val bigint null
-);
-
 create table if not exists loan
 (
     id         int         not null

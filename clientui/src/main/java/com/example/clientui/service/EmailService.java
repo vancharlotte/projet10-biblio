@@ -1,9 +1,11 @@
-package com.example.clientui;
+package com.example.clientui.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmailService {
 
     @Autowired
@@ -28,4 +30,7 @@ public class EmailService {
                 "\nvotre Bibliothèque" +
                 "\n\n\nCeci est un envoi automatique, merci de ne pas y répondre.";
     }
+
+
+
 }

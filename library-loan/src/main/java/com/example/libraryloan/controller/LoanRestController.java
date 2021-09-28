@@ -17,6 +17,7 @@ import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,10 +47,10 @@ public class LoanRestController {
             return ResponseEntity.noContent().build();}
 
         else {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-            loan.setStartDate(simpleDateFormat.parse(LocalDate.now().toString()));
-            loan.setEndDate(simpleDateFormat.parse(LocalDate.now().plusDays(28).toString()));
+            loan.setStartDate(new Date());
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_YEAR, 28);
+            loan.setEndDate(calendar.getTime());
             loan.setReturned(false);
             loan.setRenewed(false);
             loanService.saveOrUpdate(loan);
@@ -81,10 +82,10 @@ public class LoanRestController {
 
 
     //returnLoan (for now, loan returned by employee only)
-    @PutMapping(value = "/loan/return/{loan}")
+    @PutMapping(value = "/loan/return/{loanId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Loan returnLoan(@PathVariable int loan) {
-        return loanService.returnLoan(loanService.findById(loan));
+    public Loan returnLoan(@PathVariable int loanId) {
+        return loanService.returnLoan(loanService.findById(loanId));
     }
 
 

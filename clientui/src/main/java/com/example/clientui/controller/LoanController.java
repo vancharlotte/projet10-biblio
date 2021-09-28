@@ -14,11 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 @Controller
@@ -66,10 +63,9 @@ public class LoanController {
             loanInformation.setReturned(loans.get(i).isReturned());
 
             boolean late = false;
-            LocalDate now = LocalDate.now(ZoneId.of("Europe/Paris"));
-            LocalDate endDate = loans.get(i).getEndDate().toInstant().atZone(ZoneId.of("Europe/Paris")).toLocalDate();
 
-            if(!now.isBefore(endDate)){
+            Date now = new Date();
+            if(!now.before(loans.get(i).getEndDate())){
                 late = true;
             }
 

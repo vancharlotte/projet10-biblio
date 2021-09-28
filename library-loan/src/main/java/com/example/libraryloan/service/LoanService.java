@@ -70,6 +70,7 @@ public class LoanService {
     public Loan returnLoan(Loan loan) {
         Loan exist = loanDao.findById(loan.getId());
         if (exist == null) throw new LoanNotFoundException("loan not found");
+        exist.setReturned(true);
         return loanDao.save(loan);
     }
 
