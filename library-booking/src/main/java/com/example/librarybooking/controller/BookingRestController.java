@@ -93,7 +93,7 @@ public class BookingRestController {
 
     }
 
-    @PostMapping(value = "/notifNextBooking/{id},/batch/notifNextBooking/{id}")
+    @PostMapping(value = "/batch/notifNextBooking/{id}")
     public void notifNextBooking(@PathVariable int id){
         Booking booking = bookingService.findById(id);
         booking.setNotifDate(new Date());
